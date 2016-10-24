@@ -6,6 +6,9 @@ import freemarker.template.TemplateException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 /**
@@ -21,5 +24,20 @@ public class Helper {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+    }
+    public static String getHashPassword(String rawPassword){
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] passbyte;
+            passbyte = rawPassword.getBytes("UTF-8");
+            passbyte = md.digest(passbyte);
+            return new String(passbyte,"UTF-8");
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
