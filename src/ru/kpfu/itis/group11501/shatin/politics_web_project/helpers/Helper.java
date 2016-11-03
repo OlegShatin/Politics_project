@@ -25,11 +25,11 @@ public class Helper {
             e.printStackTrace();
         }
     }
-    public static String getHashPassword(String rawPassword){
+    public static String getHashedString(String rawString){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] passbyte;
-            passbyte = rawPassword.getBytes("UTF-8");
+            passbyte = rawString.getBytes("UTF-8");
             passbyte = md.digest(passbyte);
             return new String(passbyte,"UTF-8");
 

@@ -3,4 +3,51 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>ru.kpfu.itis.group11501.shatin.politics_web_project.filters.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- About Login-->
+    <filter>
+        <filter-name>loginCookieFilter</filter-name>
+        <filter-class>ru.kpfu.itis.group11501.shatin.politics_web_project.filters.CookieFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>loginSessionFilter</filter-name>
+        <filter-class>ru.kpfu.itis.group11501.shatin.politics_web_project.filters.SessionFilter</filter-class>
+    </filter>
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.LoginServlet</servlet-class>
+    </servlet>
+    <filter-mapping>
+        <filter-name>loginSessionFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>loginCookieFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+
+
+
+    <!-- Technical -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
 </web-app>
