@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         if (usersService.userExists(email, password)) {
             User currentUser = usersService.getUser(email);
             request.getSession().setAttribute("user", currentUser);
-            if (request.getParameter("rememberRequest") != null) {
+            if (request.getParameter("remember_request") != null) {
                 CookieMaster.addRememberCookie(currentUser, request, response);
             }
             response.sendRedirect("/news");
