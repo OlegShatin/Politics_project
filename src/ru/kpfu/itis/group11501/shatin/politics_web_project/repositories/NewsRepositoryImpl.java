@@ -1,8 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,19 +11,19 @@ import java.sql.SQLException;
  * @author Oleg Shatin
  *         11-501
  */
-public class UserRepositoryImpl implements UserRepository {
+public class NewsRepositoryImpl implements NewsRepository {
     @Override
-    public User getUserByEmail(String email) {
+    public Article getArticleByID(long articleID) {
         PreparedStatement statement = null;
-        User result = null;
+        Article result = null;
         try {
             statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "select * FROM users WHERE users.email LIKE ?");
-            statement.setString(1, "%" + email.toLowerCase() + "%");
+                    "select * FROM news WHERE news.id LIKE ?");
+            statement.setLong(1, articleID);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                //TODO:to realise user after db start;
-                result = new User();
+                //TODO:to realise Article after db start;
+                result = new Article();
             }
         } catch (SQLException e) {
             e.printStackTrace();

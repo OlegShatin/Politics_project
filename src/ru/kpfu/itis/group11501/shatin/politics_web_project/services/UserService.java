@@ -10,4 +10,6 @@ public interface UserService {
     boolean userExists(String email, String password);
 
     User getUser(String email);
+
+
 }
