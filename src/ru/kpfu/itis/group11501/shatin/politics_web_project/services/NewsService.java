@@ -1,6 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
 
 /**
  * @author Oleg Shatin
@@ -8,4 +9,6 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
  */
 public interface NewsService {
     Article getArticle(long articleID);
+
+    Comment addComment(Comment newComment);
 }

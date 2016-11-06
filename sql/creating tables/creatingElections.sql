@@ -6,11 +6,11 @@ CREATE TABLE elections (
   finish_time TIMESTAMPTZ
 );
 
-/*CREATE FUNCTION add_day_in_finish_time () RETURNS trigger AS $add_day_in_finish_time$
+CREATE FUNCTION add_day_in_finish_time () RETURNS trigger AS $add_day_in_finish_time$
 BEGIN
   NEW.finish_time = NEW.start_time + INTERVAL '24 hour';
 END; $add_day_in_finish_time$
-LANGUAGE  plpgsql;*/
+LANGUAGE  plpgsql;
 
 CREATE TRIGGER default_election_finish_time_trigger
 AFTER INSERT OR UPDATE ON elections FOR EACH ROW

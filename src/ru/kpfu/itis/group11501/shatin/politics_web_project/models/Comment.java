@@ -1,5 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.models;
 
+import java.time.OffsetDateTime;
+
 /**
  * @author Oleg Shatin
  *         11-501
@@ -11,15 +13,26 @@ public class Comment {
     private long userID;
     private String text;
     private int rating;
+    private OffsetDateTime publicationDateTime;
 
-    public Comment(long id, long parentCommentID, long articleID, long userID, String text, int rating) {
-        this(parentCommentID,articleID,userID,text);
+    public Comment(long parentCommentID, long articleID, long userID, String text) {
+        this.id = -1;
+        this.parentCommentID = parentCommentID;
+        this.articleID = articleID;
+        this.userID = userID;
+        this.text = text;
+    }
+
+    public Comment(long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime) {
+        this(parentCommentID, articleID, userID, text);
+        this.publicationDateTime = publicationDateTime;
+    }
+
+    public Comment(long id, long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime, int rating) {
+        this(parentCommentID, articleID, userID, text, publicationDateTime);
         this.id = id;
         this.rating = rating;
     }
-
-
-//// TODO: 05.11.2016 make date after DB will be made
 
     public long getId() {
         return id;
@@ -41,12 +54,13 @@ public class Comment {
         return text;
     }
 
-    public Comment(long parentCommentID, long articleID, long userID, String text) {
-
-        this.parentCommentID = parentCommentID;
-        this.articleID = articleID;
-        this.userID = userID;
-        this.text = text;
+    public int getRating() {
+        return rating;
     }
+
+    public OffsetDateTime getPublicationDateTime() {
+        return publicationDateTime;
+    }
+
 
 }

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 
 /**
@@ -37,7 +39,9 @@ public class ArticleServlet extends HttpServlet {
         //// TODO: 05.11.2016 Add datetime after DB
         Comment newComment = new Comment(Long.parseLong(request.getParameter("parent_comment_id")),
                 Long.parseLong(request.getParameter("a")), ((User)request.getSession().getAttribute("user")).getID(),
-                        request.getParameter("comment_text"));
+                        request.getParameter("comment_text"),
+               OffsetDateTime.now(((User)request.getSession().getAttribute("user")).getTimezoneOffset()));
+        newComment = newsService.addComment(newComment);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
