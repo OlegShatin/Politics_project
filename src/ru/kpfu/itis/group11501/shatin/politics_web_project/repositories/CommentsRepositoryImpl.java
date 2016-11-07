@@ -1,12 +1,19 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNode;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNodeImpl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Oleg Shatin
@@ -42,6 +49,31 @@ public class CommentsRepositoryImpl implements CommentsRepository {
                 statement.setTimestamp(5, new Timestamp(newComment.getPublicationDateTime().toInstant().toEpochMilli()));
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<? extends CommentNode> getCommentsForArcticleSortedByRating(Article article) {
+        List<CommentNode> result = null;
+        PreparedStatement statement = null;
+        try {
+            statement = ConnectionSingleton.getConnection().prepareStatement(
+                    "SELECT * FROM comments WHERE ? = comments.article_id AND parent_comment_id = NULL OR " +
+                            "comments.parent_comment_id = -1 ORDER BY rating DESC, publicaton_date ASC");
+            statement.setLong(1, article.getId());
+            ResultSet resultSet = statement.executeQuery();
+            result = new ArrayList<>();
+            while (resultSet.next()){
+                //// TODO: 07.11.2016 move creating comment to another mathod
+                result.add(new CommentNodeImpl(new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
+                        resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
+                        OffsetDateTime.of(resultSet.getTimestamp("publication_datetime").toLocalDateTime(),
+                                ZoneOffset.ofHours(resultSet.getTimestamp("publication_datetime").getTimezoneOffset())),
+                        resultSet.getInt("rating"))));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

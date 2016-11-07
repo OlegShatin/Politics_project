@@ -1,6 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
@@ -36,12 +37,16 @@ public class ArticleServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //// TODO: 05.11.2016 Add datetime after DB
-        Comment newComment = new Comment(Long.parseLong(request.getParameter("parent_comment_id")),
-                Long.parseLong(request.getParameter("a")), ((User)request.getSession().getAttribute("user")).getID(),
-                        request.getParameter("comment_text"),
-               OffsetDateTime.now(((User)request.getSession().getAttribute("user")).getTimezoneOffset()));
-        newComment = newsService.addComment(newComment);
+
+        User currentUser = (User)request.getSession().getAttribute("user");
+        if (currentUser != null) {
+            Comment newComment = new Comment(Long.parseLong(request.getParameter("parent_comment_id")),
+                    Long.parseLong(request.getParameter("a")), currentUser.getID(),
+                    request.getParameter("comment_text"),
+                    OffsetDateTime.now(currentUser.getTimezoneOffset()));
+            newComment = newsService.addComment(newComment);
+        }
+        response.sendRedirect(request.getServletPath());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,7 +57,9 @@ public class ArticleServlet extends HttpServlet {
         } else {
             root.put("user_role", currentUser.getRole());
         }
-        root.put("article", newsService.getArticle(Long.parseLong(request.getParameter("a"))));
+        Article article = newsService.getArticle(Long.parseLong(request.getParameter("a")));
+        root.put("article", article);
+        root.put("comments", newsService.getCommentsOfArticle(article));
         Helper.render(request, response, "login.ftl", root);
     }
 }
