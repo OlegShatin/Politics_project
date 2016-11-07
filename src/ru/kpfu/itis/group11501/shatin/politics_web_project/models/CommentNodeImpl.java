@@ -22,4 +22,9 @@ public class CommentNodeImpl implements CommentNode {
     public List<CommentNode> getChildren() {
         return children;
     }
+
+    @Override
+    public void setChildren(List<CommentNode> children) {
+        children.addAll(children);
+    }
 }

@@ -9,7 +9,9 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepo
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepositoryImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author Oleg Shatin
@@ -36,8 +38,26 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<CommentNode> getCommentsOfArticle(Article article) {
         List<CommentNode> result = new ArrayList<>();
-        result.addAll(commentsRepository.getCommentsForArcticleSortedByRating(article));
-        //// TODO: 07.11.2016 put all commets 
+        List<CommentNode> firstCommentsNodes = commentsRepository.getCommentsForArcticleSortedByRating(article);
+        for (CommentNode node: firstCommentsNodes) {
+            Stack<CommentNode> stack = new Stack<>();
+            stack.push(node);
+            List<CommentNode> childrenNodes = null;
+            CommentNode parentNode = null;
+            //DFS: node is first node, collections reverse list from db to save order when it will be pushed to stack
+            while (!stack.isEmpty()) {
+                childrenNodes = commentsRepository.getChildrenCommentsSortedByRating(stack.peek().getComment());
+                if (!childrenNodes.isEmpty()) {
+                    parentNode = stack.pop();
+                    parentNode.setChildren(childrenNodes);
+                    Collections.reverse(childrenNodes);
+                    stack.addAll(childrenNodes);
+                } else {
+                    stack.pop();
+                }
+            }
+            result.add(node);
+        }
         return result;
     }
 }

@@ -56,7 +56,7 @@ public class CommentsRepositoryImpl implements CommentsRepository {
     }
 
     @Override
-    public List<? extends CommentNode> getCommentsForArcticleSortedByRating(Article article) {
+    public List<CommentNode> getCommentsForArcticleSortedByRating(Article article) {
         List<CommentNode> result = null;
         PreparedStatement statement = null;
         try {
@@ -67,17 +67,27 @@ public class CommentsRepositoryImpl implements CommentsRepository {
             ResultSet resultSet = statement.executeQuery();
             result = new ArrayList<>();
             while (resultSet.next()){
-                //// TODO: 07.11.2016 move creating comment to another mathod
-                result.add(new CommentNodeImpl(new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
-                        resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
-                        OffsetDateTime.of(resultSet.getTimestamp("publication_datetime").toLocalDateTime(),
-                                ZoneOffset.ofHours(resultSet.getTimestamp("publication_datetime").getTimezoneOffset())),
-                        resultSet.getInt("rating"))));
+                //// TODO: 07.11.2016 move creating comment to another method
+                result.add(new CommentNodeImpl(createCommentLikeResultSet(resultSet)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private Comment createCommentLikeResultSet(ResultSet resultSet) throws SQLException {
+        return new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
+                resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
+                OffsetDateTime.of(resultSet.getTimestamp("publication_datetime").toLocalDateTime(),
+                        ZoneOffset.ofHours(resultSet.getTimestamp("publication_datetime").getTimezoneOffset())),
+                resultSet.getInt("rating"));
+    }
+
+    @Override
+    public List<CommentNode> getChildrenCommentsSortedByRating(Comment comment) {
+        return null;
+        //// TODO: 08.11.2016  
     }
 
     private Comment straightUpdateComment(Comment newComment) throws SQLException {

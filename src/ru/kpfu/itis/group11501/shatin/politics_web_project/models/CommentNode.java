@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommentNode {
     public Comment getComment();
     public List<CommentNode> getChildren();
+    void setChildren(List<CommentNode> children);
 }
