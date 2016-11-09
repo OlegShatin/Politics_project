@@ -3,6 +3,7 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNode;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CommentsRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CommentsRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepository;
@@ -26,8 +27,8 @@ public class NewsServiceImpl implements NewsService {
         commentsRepository = new CommentsRepositoryImpl();
     }
     @Override
-    public Article getArticle(long articleID) {
-        return newsRepository.getArticleByID(articleID);
+    public Article getArticle(long articleID, User user) {
+        return newsRepository.getArticleByIDForUser(articleID, user);
     }
 
     @Override
@@ -36,9 +37,9 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<CommentNode> getCommentsOfArticle(Article article) {
+    public List<CommentNode> getCommentsOfArticleForUser(Article article, User user) {
         List<CommentNode> result = new ArrayList<>();
-        List<CommentNode> firstCommentsNodes = commentsRepository.getCommentsForArcticleSortedByRating(article);
+        List<CommentNode> firstCommentsNodes = commentsRepository.getCommentsForArticleSortedByRatingForUser(article, user);
         for (CommentNode node: firstCommentsNodes) {
             Stack<CommentNode> stack = new Stack<>();
             stack.push(node);
@@ -46,7 +47,7 @@ public class NewsServiceImpl implements NewsService {
             CommentNode parentNode = null;
             //DFS: node is first node, collections reverse list from db to save order when it will be pushed to stack
             while (!stack.isEmpty()) {
-                childrenNodes = commentsRepository.getChildrenCommentsSortedByRating(stack.peek().getComment());
+                childrenNodes = commentsRepository.getChildrenCommentsSortedByRatingForUser(stack.peek().getComment(), user);
                 if (!childrenNodes.isEmpty()) {
                     parentNode = stack.pop();
                     parentNode.setChildren(childrenNodes);
@@ -59,5 +60,10 @@ public class NewsServiceImpl implements NewsService {
             result.add(node);
         }
         return result;
+    }
+
+    @Override
+    public List<Article> getArticlesForUser(User user) {
+        return newsRepository.getArticlesForUser(user);
     }
 }

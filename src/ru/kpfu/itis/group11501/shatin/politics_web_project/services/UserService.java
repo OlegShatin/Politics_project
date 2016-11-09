@@ -7,7 +7,7 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
  *         11-501
  */
 public interface UserService {
-    boolean userExists(String email, String password);
+    boolean userExists(String email, String hashed_password);
 
     User getUser(String email);
 

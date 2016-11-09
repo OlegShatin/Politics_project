@@ -1,10 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNode;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNodeImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,38 +53,49 @@ public class CommentsRepositoryImpl implements CommentsRepository {
     }
 
     @Override
-    public List<CommentNode> getCommentsForArcticleSortedByRating(Article article) {
+    public List<CommentNode> getCommentsForArticleSortedByRatingForUser(Article article, User user) {
+        return getChildren(null, article, user);
+    }
+    @Override
+    public List<CommentNode> getChildrenCommentsSortedByRatingForUser(Comment comment, User user) {
+        return getChildren(comment, null, user);
+    }
+    /**
+     *default returns Children comments for article , if article and comment are not null
+     * */
+    private List<CommentNode> getChildren(Comment comment, Article article, User user){
         List<CommentNode> result = null;
         PreparedStatement statement = null;
         try {
-            statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "SELECT * FROM comments WHERE ? = comments.article_id AND parent_comment_id = NULL OR " +
-                            "comments.parent_comment_id = -1 ORDER BY rating DESC, publicaton_date ASC");
-            statement.setLong(1, article.getId());
+            if (article != null){
+                statement = ConnectionSingleton.getConnection().prepareStatement(
+                        "SELECT * FROM comments WHERE ? = comments.article_id AND (parent_comment_id = NULL OR " +
+                                "comments.parent_comment_id = -1) ORDER BY rating DESC, publicaton_date ASC");
+                statement.setLong(1, article.getId());
+            } else {
+                statement = ConnectionSingleton.getConnection().prepareStatement(
+                        "SELECT * FROM comments WHERE ? = comments.parent_comment_id AND article_id = ?" +
+                                " ORDER BY rating DESC, publicaton_date ASC");
+                statement.setLong(1, comment.getId());
+                statement.setLong(2, comment.getArticleID());
+            }
             ResultSet resultSet = statement.executeQuery();
             result = new ArrayList<>();
             while (resultSet.next()){
-                //// TODO: 07.11.2016 move creating comment to another method
-                result.add(new CommentNodeImpl(createCommentLikeResultSet(resultSet)));
+                result.add(new CommentNodeImpl(createCommentLikeResultSetForUser(resultSet, user)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
-
-    private Comment createCommentLikeResultSet(ResultSet resultSet) throws SQLException {
+    private Comment createCommentLikeResultSetForUser(ResultSet resultSet, User user) throws SQLException {
         return new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
                 resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
                 OffsetDateTime.of(resultSet.getTimestamp("publication_datetime").toLocalDateTime(),
-                        ZoneOffset.ofHours(resultSet.getTimestamp("publication_datetime").getTimezoneOffset())),
+                        ZoneOffset.ofHours(resultSet.getTimestamp("publication_datetime").getTimezoneOffset()))
+                .withOffsetSameInstant(user.getTimezoneOffset()),
                 resultSet.getInt("rating"));
-    }
-
-    @Override
-    public List<CommentNode> getChildrenCommentsSortedByRating(Comment comment) {
-        return null;
-        //// TODO: 08.11.2016  
     }
 
     private Comment straightUpdateComment(Comment newComment) throws SQLException {

@@ -57,9 +57,11 @@ public class ArticleServlet extends HttpServlet {
         } else {
             root.put("user_role", currentUser.getRole());
         }
-        Article article = newsService.getArticle(Long.parseLong(request.getParameter("a")));
+        Article article = newsService.getArticle(Long.parseLong(request.getParameter("a")), //// TODO: 09.11.2016 fix this hardcode: required tome offset session atribute
+                currentUser != null ? currentUser : new User(Role.GUEST, OffsetDateTime.now().getOffset()));
         root.put("article", article);
-        root.put("comments", newsService.getCommentsOfArticle(article));
-        Helper.render(request, response, "login.ftl", root);
+        root.put("comments", newsService.getCommentsOfArticleForUser(article,//// TODO: 09.11.2016 fix this hardcode: required tome offset session atribute 
+                currentUser != null ? currentUser : new User(Role.GUEST, OffsetDateTime.now().getOffset())));
+        Helper.render(request, response, "article.ftl", root);
     }
 }

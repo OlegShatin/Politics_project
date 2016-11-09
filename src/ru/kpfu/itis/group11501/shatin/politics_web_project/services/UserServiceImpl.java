@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
 
+import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepositoryImpl;
@@ -15,7 +16,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean userExists(String email, String password) {
-        return false;
+        return userRepository.userExists(email, Helper.getHashedString(password));
     }
 
     @Override
