@@ -11,10 +11,14 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>CookieFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- About Login-->
     <filter>
-        <filter-name>loginCookieFilter</filter-name>
+        <filter-name>CookieFilter</filter-name>
         <filter-class>ru.kpfu.itis.group11501.shatin.politics_web_project.filters.CookieFilter</filter-class>
     </filter>
     <filter>
@@ -29,15 +33,20 @@
         <filter-name>loginSessionFilter</filter-name>
         <url-pattern>/login</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>loginCookieFilter</filter-name>
-        <url-pattern>/login</url-pattern>
-    </filter-mapping>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <!-- News -->
+    <servlet>
+        <servlet-name>NewsServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.NewsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewsServlet</servlet-name>
+        <url-pattern>/news</url-pattern>
+    </servlet-mapping>
 
 
 
@@ -49,5 +58,25 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ttf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.eot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.svg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff2</url-pattern>
     </servlet-mapping>
 </web-app>

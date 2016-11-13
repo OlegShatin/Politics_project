@@ -30,7 +30,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (usersService.userExists(email, password)) {

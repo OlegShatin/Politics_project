@@ -2,6 +2,7 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.filters;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -15,8 +16,10 @@ public class EncodingFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
         chain.doFilter(req, resp);
-        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
     }
 
     public void init(FilterConfig config) throws ServletException {

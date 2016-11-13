@@ -18,7 +18,7 @@ public class ConnectionSingleton {
                 e.printStackTrace();
             }
             try {
-                connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ServletApp",
+                connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/politics_web_app",
                         "postgres", "postgres");
             } catch (SQLException e) {
                 e.printStackTrace();

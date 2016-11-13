@@ -45,11 +45,13 @@ public class CookieMaster {
             if (cookie.getName().equals("key"))
                 key = cookie.getValue();
         }
-        try {
-            currentUser = userService.getUser(AES.decrypt(encryptedEmail,key));
-        } catch (Exception e) {
-            currentUser = userService.getUser(encryptedEmail);
-            e.printStackTrace();
+        if (encryptedEmail != null && key!= null) {
+            try {
+                currentUser = userService.getUser(AES.decrypt(encryptedEmail, key));
+            } catch (Exception e) {
+                currentUser = userService.getUser(encryptedEmail);
+                e.printStackTrace();
+            }
         }
         return currentUser;
     }

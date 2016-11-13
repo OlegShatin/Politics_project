@@ -22,12 +22,15 @@ public class CookieFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        User currentUser = CookieMaster.getUser(request);
-        if (currentUser == null) {
-            chain.doFilter(req, resp);
+        if (request.getSession().getAttribute("user")  == null) {
+            User currentUser = CookieMaster.getUser(request);
+            if (currentUser == null) {
+                chain.doFilter(req, resp);
+            } else {
+                request.getSession().setAttribute("user", currentUser);
+            }
         } else {
-            request.getSession().setAttribute("user", currentUser);
-            response.sendRedirect("/news");
+            chain.doFilter(request, response);
         }
 
     }

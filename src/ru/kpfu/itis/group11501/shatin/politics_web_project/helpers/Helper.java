@@ -17,7 +17,8 @@ import java.util.HashMap;
  */
 public class Helper {
     public static void render(HttpServletRequest request, HttpServletResponse response, String ftlName, HashMap<String, Object> root) throws IOException {
-        response.setContentType("text/html");
+
+        response.setContentType("text/html;charset=UTF-8");
         Template tmpl = ConfigSingleton.getConfig(request.getServletContext()).getTemplate(ftlName);
         try {
             tmpl.process(root, response.getWriter());
