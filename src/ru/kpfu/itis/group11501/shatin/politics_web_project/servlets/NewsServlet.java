@@ -36,9 +36,9 @@ public class NewsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        User currentUser = (User)request.getSession().getAttribute("user");
+        User currentUser = (User) request.getSession().getAttribute("user");
         HashMap<String, Object> root = new HashMap<>();
-        if (currentUser == null){
+        if (currentUser == null) {
             root.put("user_role", Role.GUEST);
         } else {
             root.put("user_role", currentUser.getRole());

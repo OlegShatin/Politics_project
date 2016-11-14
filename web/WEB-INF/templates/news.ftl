@@ -2,6 +2,13 @@
 <#macro title>
 <title>Новости</title>
 </#macro>
+<#macro in_out>
+    <#if user_role.name() == "GUEST">
+    <a href="/login">Войти</a>
+    <#else>
+    <a href="/logout">Выйти</a>
+    </#if>
+</#macro>
 <#macro custom_css>
 <!-- Custom CSS -->
 <link href="css/feed.css" rel="stylesheet">
@@ -13,16 +20,19 @@
         <h1 class="page-header"> Последние новости
             <small>(что-то если вдруг надо)</small>
         </h1>
+        <a class="btn btn-block btn-success <#if user_role.name() == "AGENT" || user_role.name() == "ADMIN">disabled</#if>"
+           href="<#if user_role.name() == "GUEST">/login<#else>/ballot</#if>" role=button">Проголосовать</a>
     </div>
 </div>
 <!-- /.row -->
 
-<!-- Project One -->
     <#list articles as article>
+    <hr>
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
             <h3>${article.headline}</h3>
-            <h4>${article.publicationDateTime.getDayOfMonth()}.${article.publicationDateTime.month.getValue()}.${article.publicationDateTime.year?c}
+            <h4>${article.publicationDateTime.getDayOfMonth()}
+                .${article.publicationDateTime.month.getValue()}.${article.publicationDateTime.year?c}
                 <#if article.publicationDateTime.getHour() <10>
                     0${article.publicationDateTime.getHour()}
                 <#else>
@@ -46,125 +56,6 @@
         </div>
     </div>
     </#list>
-
-<!-- /.row -->
-
-<hr>
-
-<!-- Project Two -->
-<div class="row">
-    <div class="col-md-7">
-        <a href="#">
-            <img class="img-responsive" src="http://placehold.it/700x300" alt="">
-        </a>
-    </div>
-    <div class="col-md-5">
-        <h3>Выиграет Едрос, заявила Единая Россия</h3>
-        <h4>(КПРФ)</h4>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, odit velit cumque vero doloremque repellendus
-            distinctio maiores rem expedita a nam vitae modi quidem similique ducimus! Velit, esse totam tempore.</p>
-        <a class="btn btn-primary" href="#">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-</div>
-<!-- /.row -->
-
-<hr>
-
-<!-- Project Three -->
-<div class="row">
-    <div class="col-md-7">
-        <a href="#">
-            <img class="img-responsive" src="http://placehold.it/700x300" alt="">
-        </a>
-    </div>
-    <div class="col-md-5">
-        <h3>Еще что то</h3>
-        <h4>Еще что то</h4>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, temporibus, dolores, at, praesentium ut unde
-            repudiandae voluptatum sit ab debitis suscipit fugiat natus velit excepturi amet commodi deleniti alias
-            possimus!</p>
-        <a class="btn btn-primary" href="#">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-</div>
-<!-- /.row -->
-
-<hr>
-
-<!-- Project Four -->
-<div class="row">
-
-    <div class="col-md-7">
-        <a href="#">
-            <img class="img-responsive" src="http://placehold.it/700x300" alt="">
-        </a>
-    </div>
-    <div class="col-md-5">
-        <h3>Еще что то</h3>
-        <h4>Еще что то</h4>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quidem, consectetur, officia rem
-            officiis illum aliquam perspiciatis aspernatur quod modi hic nemo qui soluta aut eius fugit quam in
-            suscipit?</p>
-        <a class="btn btn-primary" href="#">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-</div>
-<!-- /.row -->
-
-<hr>
-
-<!-- Project Five -->
-<div class="row">
-    <div class="col-md-7">
-        <a href="#">
-            <img class="img-responsive" src="http://placehold.it/700x300" alt="">
-        </a>
-    </div>
-    <div class="col-md-5">
-        <h3>Еще что то</h3>
-        <h4>Еще что то</h4>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, quo, minima, inventore voluptatum saepe
-            quos nostrum provident ex quisquam hic odio repellendus atque porro distinctio quae id laboriosam facilis
-            dolorum.</p>
-        <a class="btn btn-primary" href="#">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-</div>
-<!-- /.row -->
-
-<hr>
-
-<!-- Pagination -->
-<div class="row text-center">
-    <div class="col-lg-12">
-        <ul class="pagination">
-            <li>
-                <a href="#">&laquo;</a>
-            </li>
-            <li class="active">
-                <a href="#">1</a>
-            </li>
-            <li>
-                <a href="#">2</a>
-            </li>
-            <li>
-                <a href="#">3</a>
-            </li>
-            <li>
-                <a href="#">4</a>
-            </li>
-            <li>
-                <a href="#">5</a>
-            </li>
-            <li>
-                <a href="#">&raquo;</a>
-            </li>
-        </ul>
-    </div>
-</div>
-<!-- /.row -->
-
 <hr>
 </#macro>
 <#macro scripts></#macro>

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.filters;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.CookieMaster;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.CookieMasterImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 
 import javax.jws.soap.SOAPBinding;
@@ -16,6 +17,8 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "CookieFilter")
 public class CookieFilter implements Filter {
+    private CookieMaster cookieMaster;
+
     public void destroy() {
     }
 
@@ -23,11 +26,12 @@ public class CookieFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         if (request.getSession().getAttribute("user")  == null) {
-            User currentUser = CookieMaster.getUser(request);
+            User currentUser = cookieMaster.getUser(request);
             if (currentUser == null) {
                 chain.doFilter(req, resp);
             } else {
                 request.getSession().setAttribute("user", currentUser);
+                cookieMaster.updateCookies(currentUser, response);
             }
         } else {
             chain.doFilter(request, response);
@@ -36,7 +40,7 @@ public class CookieFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-
+        cookieMaster = new CookieMasterImpl();
     }
 
 }

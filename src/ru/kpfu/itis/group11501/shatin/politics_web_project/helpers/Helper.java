@@ -27,12 +27,16 @@ public class Helper {
         }
     }
     public static String getHashedString(String rawString){
+        if (true) {
+            //// TODO: 14.11.2016 fix utf-8 bag
+            return "" + rawString.hashCode();
+        }
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] passbyte;
             passbyte = rawString.getBytes("UTF-8");
             passbyte = md.digest(passbyte);
-            return new String(passbyte,"UTF-8");
+            return new String(passbyte, "UTF-8");
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

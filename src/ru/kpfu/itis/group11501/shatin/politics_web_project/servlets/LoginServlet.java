@@ -1,6 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.CookieMaster;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.CookieMasterImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
@@ -22,11 +23,13 @@ import java.util.HashMap;
 public class LoginServlet extends HttpServlet {
 
     private UserService usersService;
+    private CookieMaster cookieMaster;
 
     @Override
     public void init() throws ServletException {
         super.init();
         usersService = new UserServiceImpl();
+        cookieMaster = new CookieMasterImpl();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             User currentUser = usersService.getUser(email);
             request.getSession().setAttribute("user", currentUser);
             if (request.getParameter("remember_request") != null) {
-                CookieMaster.addRememberCookie(currentUser, request, response);
+                cookieMaster.addRememberCookie(currentUser, response);
             }
             response.sendRedirect("/news");
         } else {

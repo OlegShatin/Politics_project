@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <@title/>
+<@title/>
     <!--style-->
     <link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <@custom_css/>
+<@custom_css/>
 
 </head>
 <body>
@@ -19,7 +19,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -44,6 +45,9 @@
                 <li>
                     <a href="#">Мои обращения</a>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><@in_out/></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
