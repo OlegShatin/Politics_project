@@ -7,6 +7,7 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepo
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepositoryImpl;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.regex.Pattern;
 
 /**
@@ -58,5 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(long userId) {
         return userRepository.getUserById(userId);
+    }
+
+    @Override
+    public User getGuest() {
+        //// TODO: 09.11.2016 fix this hardcode: required time offset session atribute
+        return new User(Role.GUEST, OffsetDateTime.now().getOffset());
     }
 }

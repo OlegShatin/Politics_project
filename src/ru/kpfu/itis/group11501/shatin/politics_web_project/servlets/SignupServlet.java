@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ public class SignupServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!request.getParameter("password").equals(request.getParameter("repeated_password"))){
+        if (!request.getParameter("password").equals(request.getParameter("repeated_password"))) {
             response.sendRedirect("/signup?error=passwords_dont_match");
         } else {
             if (userService.emailAlreadyExists(request.getParameter("email").toLowerCase())) {
@@ -45,19 +46,23 @@ public class SignupServlet extends HttpServlet {
                     if (userService.samePassportExists(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
                         response.sendRedirect("/signup?error=passport_already_exists");
                     } else {
-                        User currentNewUser = userService.createNewUser(
-                                Helper.getHashedString(request.getParameter("password")),
-                                request.getParameter("email").toLowerCase(),
-                                Role.USER,
-                                Integer.parseInt(request.getParameter("timezone_offset")),
-                                request.getParameter("passport_series"),
-                                request.getParameter("passport_num"),
-                                request.getParameter("name"),
-                                request.getParameter("surname"),
-                                request.getParameter("patronymic"),
-                                LocalDate.parse(request.getParameter("birthday_date")));
-                        request.getSession().setAttribute("user", currentNewUser);
-                        response.sendRedirect("/news");
+                        try {
+                            User currentNewUser = userService.createNewUser(
+                                    Helper.getHashedString(request.getParameter("password")),
+                                    request.getParameter("email").toLowerCase(),
+                                    Role.USER,
+                                    Integer.parseInt(request.getParameter("timezone_offset")),
+                                    request.getParameter("passport_series"),
+                                    request.getParameter("passport_num"),
+                                    request.getParameter("name"),
+                                    request.getParameter("surname"),
+                                    request.getParameter("patronymic"),
+                                    LocalDate.parse(request.getParameter("birthday_date")));
+                            request.getSession().setAttribute("user", currentNewUser);
+                            response.sendRedirect("/news");
+                        } catch (DateTimeParseException e) {
+                            response.sendRedirect("/signup?error=data_error");
+                        }
                     }
                 }
             }

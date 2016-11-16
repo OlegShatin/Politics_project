@@ -32,11 +32,11 @@ public class CookieFilter implements Filter {
             } else {
                 request.getSession().setAttribute("user", currentUser);
                 cookieMaster.updateCookies(currentUser, response);
+                chain.doFilter(req, resp);
             }
         } else {
             chain.doFilter(request, response);
         }
-
     }
 
     public void init(FilterConfig config) throws ServletException {

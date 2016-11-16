@@ -25,6 +25,7 @@ import java.util.HashMap;
  *         11-501
  */
 @WebServlet(name = "ArticleServlet")
+@Deprecated
 public class ArticleServlet extends HttpServlet {
     private UserService userService;
     private NewsService newsService;

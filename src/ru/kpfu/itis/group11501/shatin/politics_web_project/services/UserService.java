@@ -25,4 +25,6 @@ public interface UserService {
     User createNewUser(String password, String email, Role role, int timezoneOffset, String passportSeries, String passportNum, String name, String surname, String patronymic, LocalDate birthdayDate);
 
     User getUser(long userId);
+
+    User getGuest();
 }

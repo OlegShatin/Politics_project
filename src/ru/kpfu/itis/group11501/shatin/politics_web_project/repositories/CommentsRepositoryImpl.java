@@ -36,7 +36,7 @@ public class CommentsRepositoryImpl implements CommentsRepository {
                 result = straightUpdateComment(newComment);
             } else {
                 statement = ConnectionSingleton.getConnection().prepareStatement(
-                        "INSERT INTO comments(user_id, article_id, parent_comment_id, comment_text, publicaton_date) " +
+                        "INSERT INTO comments(user_id, article_id, parent_comment_id, comment_text, publication_date) " +
                                 "VALUES (?,?,?,?,?)"
                 );
                 statement.setLong(1, newComment.getUserID());
@@ -69,20 +69,24 @@ public class CommentsRepositoryImpl implements CommentsRepository {
         try {
             if (article != null){
                 statement = ConnectionSingleton.getConnection().prepareStatement(
-                        "SELECT * FROM comments WHERE ? = comments.article_id AND (parent_comment_id = NULL OR " +
-                                "comments.parent_comment_id = -1) ORDER BY rating DESC, publicaton_date ASC");
+                        "SELECT * FROM comments JOIN users ON (users.id = comments.user_id) WHERE ? = article_id AND (parent_comment_id IS NULL OR " +
+                                "parent_comment_id = -1) ORDER BY rating DESC, publication_date ASC");
                 statement.setLong(1, article.getId());
+                System.out.println("article");
             } else {
                 statement = ConnectionSingleton.getConnection().prepareStatement(
-                        "SELECT * FROM comments WHERE ? = comments.parent_comment_id AND article_id = ?" +
-                                " ORDER BY rating DESC, publicaton_date ASC");
+                        "SELECT * FROM comments JOIN users ON (users.id = comments.user_id) WHERE ? = parent_comment_id AND article_id = ?" +
+                                " ORDER BY rating DESC, publication_date ASC");
                 statement.setLong(1, comment.getId());
                 statement.setLong(2, comment.getArticleID());
             }
             ResultSet resultSet = statement.executeQuery();
             result = new ArrayList<>();
             while (resultSet.next()){
-                result.add(new CommentNodeImpl(createCommentLikeResultSetForUser(resultSet, user)));
+                result.add(new CommentNodeImpl(createCommentLikeResultSetForUser(resultSet, user),
+                        //// TODO: 16.11.2016 bugfix
+                        resultSet.getString("name"),
+                        resultSet.getString("surname")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,7 +96,8 @@ public class CommentsRepositoryImpl implements CommentsRepository {
     private Comment createCommentLikeResultSetForUser(ResultSet resultSet, User user) throws SQLException {
         return new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
                 resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
-                OffsetDateTime.ofInstant(resultSet.getTimestamp("publication_datetime").toInstant(), ZoneOffset.ofHours(resultSet.getTimestamp("datetime").getTimezoneOffset()/60))
+                OffsetDateTime.ofInstant(resultSet.getTimestamp("publication_date").toInstant(),
+                        ZoneOffset.ofHours(resultSet.getTimestamp("publication_date").getTimezoneOffset()/60))
                         .withOffsetSameInstant(user.getTimezoneOffset()),
                 resultSet.getInt("rating"));
     }
@@ -101,7 +106,7 @@ public class CommentsRepositoryImpl implements CommentsRepository {
         PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                 "UPDATE comments " +
                         "SET  parent_comment_id = ?, article_id = ?, user_id = ?," +
-                        " comment_text = ?, publicaton_date = ?, rating = ? WHERE id = ?;"
+                        " comment_text = ?, publication_date = ?, rating = ? WHERE id = ?;"
         );
         statement.setLong(1, newComment.getParentCommentID());
         statement.setLong(2, newComment.getArticleID());

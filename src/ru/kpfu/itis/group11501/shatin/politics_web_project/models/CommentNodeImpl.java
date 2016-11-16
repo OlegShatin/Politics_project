@@ -7,10 +7,23 @@ import java.util.List;
  *         11-501
  */
 public class CommentNodeImpl implements CommentNode {
-    Comment comment;
+    private String authorName;
+    private String authorSurname;
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getAuthorSurname() {
+        return authorSurname;
+    }
+
+    private Comment comment;
     List<CommentNode> children;
-    public CommentNodeImpl(Comment comment) {
+    public CommentNodeImpl(Comment comment, String name, String surname) {
         this.comment = comment;
+        this.authorName = name;
+        this.authorSurname = surname;
     }
 
     @Override

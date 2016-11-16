@@ -46,7 +46,7 @@
             </h4>
 
             <p>${article.content}</p>
-            <a class="btn btn-primary" href="#">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <a class="btn btn-primary" href="/news?a=${article.getId()}">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
     </div>
     <#else>
