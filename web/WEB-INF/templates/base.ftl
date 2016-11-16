@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">Новости</a>
+                    <a href="/news">Новости</a>
                 </li>
                 <li>
                     <a href="#">Кандидаты</a>

@@ -30,30 +30,160 @@
         <hr/>
     </div>
 </div>
+    <#if error?has_content><p>${error}</p></#if>
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
+        <h3>Комментарии:</h3>
+        <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
+            <button class="btn btn-primary" role="button" data-toggle="collapse" data-parent="#accordion"
+               href="#collapse_main"
+               aria-expanded="true" aria-controls="collapse_main">
+                Комментировать
+            </button>
+            <div id="collapse_main" class="panel-collapse collapse"
+                 role="tabpanel"
+                 aria-labelledby="heading_main">
+                <div class="panel-body">
+                    <form method="post"
+                          action="/news?a=${article.getId()}">
+                        <div class="form-group">
+                                <textarea class="form-control" rows="3" name="comment_text"
+                                          placeholder="Ваш комментарий"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Комментировать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <#else >
+            <h4>Чтобы комментировать статью вам нужно <a href="/login">войти</a></h4>
+        </#if>
+        <br/>
+        <br/>
         <#list comments as comment>
-            <label>${comment.getAuthorName()} ${comment.getAuthorSurname()}</label>
-            <p>${comment.getComment().getText()}</p>
-            <@comment_node parent=comment/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <label>${comment.getAuthorName()} ${comment.getAuthorSurname()}</label>
+
+                    <p>${comment.getComment().getText()}</p>
+                    <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
+                        <button type="button" class="btn btn-success btn-xs"
+                                onclick="up(${comment.getComment().getId()})">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </button>
+                        <label id="counter${comment.getComment().getId()}">${comment.getComment().getRating()}</label>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                onclick="down(${comment.getComment().getId()})">
+                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                        </button>
+                        <a class="small" role="button" data-toggle="collapse" data-parent="#accordion"
+                           href="#collapse_${comment.getComment().getId()}"
+                           aria-expanded="true" aria-controls="collapse_${comment.getComment().getId()}">
+                            Ответить
+                        </a>
+                    <#else>
+                        <a class="small" href="/login">Ответить</a>
+                    </#if>
+                </div>
+            </div>
+            <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
+                <div id="collapse_${comment.getComment().getId()}" class="panel-collapse collapse"
+                     role="tabpanel"
+                     aria-labelledby="heading_${comment.getComment().getId()}">
+                    <div class="panel-body">
+                        <form method="post"
+                              action="/news?a=${article.getId()}&parent_comment_id=${comment.getComment().getId()}">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" name="comment_text"
+                                          placeholder="Ваш комментарий"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Ответить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </#if>
+            <#if comment.getChildren()?has_content>
+                <@comment_node parent=comment/>
+            </#if>
+        <#else>
+            <label>Комментариев пока нет... Будьте первым!</label>
         </#list>
+        <hr>
     </div>
 </div>
-<hr>
+
+
+</div>
 </#macro>
-////todo: make somehow comments tree
+
 <#macro comment_node parent>
-<div class="row">
-    <div class="col-xs-8 col-xs-offset-2">
-        <#list parent.getChildren() as comment>
-            <label>${comment.getAuthorName()} ${comment.getAuthorSurname()}</label>
+    <#list parent.getChildren() as comm>
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <label>${comm.getAuthorName()} ${comm.getAuthorSurname()}</label>
 
-            <p>${comment.getComment().getText()}</p>
-            <@comment_node parent=comment/>
-        </#list>
+                    <p>${comm.getComment().getText()}</p>
+                    <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
+                        <button type="button" class="btn btn-success btn-xs" onclick="up(${comm.getComment().getId()})">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </button>
+                        <label id="counter${comm.getComment().getId()}">${comm.getComment().getRating()}</label>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                onclick="down(${comm.getComment().getId()})">
+                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                        </button>
+                        <a class="small" role="button" data-toggle="collapse" data-parent="#accordion"
+                           href="#collapse_${comm.getComment().getId()}"
+                           aria-expanded="true" aria-controls="collapse_${comm.getComment().getId()}">
+                            Ответить
+                        </a>
+                    <#else>
+                        <button type="button" class="btn btn-success btn-xs disabled">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </button>
+                        <label id="counter${comm.getComment().getId()}">${comm.getComment().getRating()}</label>
+                        <button type="button" class="btn btn-danger btn-xs disabled">
+                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                        </button>
+                        <a class="small" href="/login">Ответить</a>
+                    </#if>
+                </div>
+            </div>
+            <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
+                <div id="collapse_${comm.getComment().getId()}" class="panel-collapse collapse"
+                     role="tabpanel"
+                     aria-labelledby="heading_${comm.getComment().getId()}">
+                    <div class="panel-body">
+                        <form method="post"
+                              action="/news?a=${article.getId()}&parent_comment_id=${comm.getComment().getId()}">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" name="comment_text"
+                                          placeholder="Ваш комментарий"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Ответить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </#if>
+            <#if comm.getChildren()?has_content>
+                <@comment_node parent=comm/>
+            </#if>
+        </div>
     </div>
-</div>
+    <#else>
+    </#list>
+
 </#macro>
 
-<#macro scripts></#macro>
+<#macro scripts>
+<script src="js/jquery.js"></script>
+<script src="js/ajax-rating-comment.js"></script>
+</#macro>
 <#include "base.ftl">

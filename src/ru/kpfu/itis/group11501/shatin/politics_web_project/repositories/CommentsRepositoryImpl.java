@@ -3,10 +3,7 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -26,11 +23,16 @@ public class CommentsRepositoryImpl implements CommentsRepository {
     @Override
     public Comment addNewComment(Comment newComment) {
         PreparedStatement statement = null;
-        Comment result = null;
+        Comment result = newComment;
         try {
             statement = ConnectionSingleton.getConnection().prepareStatement(
                     "SELECT id FROM comments WHERE ? = comments.id");
-            statement.setLong(1, newComment.getId());
+            //check its new comment or not
+            if (newComment.getId() != null) {
+                statement.setLong(1, newComment.getId());
+            } else {
+                statement.setLong(1, -1);
+            }
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 result = straightUpdateComment(newComment);
@@ -41,9 +43,14 @@ public class CommentsRepositoryImpl implements CommentsRepository {
                 );
                 statement.setLong(1, newComment.getUserID());
                 statement.setLong(2, newComment.getArticleID());
-                statement.setLong(3, newComment.getParentCommentID());
+                if (newComment.getParentCommentID() != null) {
+                    statement.setLong(3, newComment.getParentCommentID());
+                } else {
+                    statement.setNull(3, Types.INTEGER);
+                }
                 statement.setString(4, newComment.getText());
                 statement.setTimestamp(5, new Timestamp(newComment.getPublicationDateTime().toInstant().toEpochMilli()));
+                statement.executeUpdate();
             }
 
         } catch (SQLException e) {
@@ -60,11 +67,44 @@ public class CommentsRepositoryImpl implements CommentsRepository {
     public List<CommentNode> getChildrenCommentsSortedByRatingForUser(Comment comment, User user) {
         return getChildren(comment, null, user);
     }
+
+    @Override
+    public Comment getComment(long commentId, User user) {
+        PreparedStatement statement = null;
+        Comment result = null;
+        try {
+            statement = ConnectionSingleton.getConnection().prepareStatement(
+                    "SELECT * FROM comments WHERE ? = comments.id");
+            statement.setLong(1, commentId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result = createCommentLikeResultSetForUser(resultSet, user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public void changeCommentRating(Comment comment, int rate) {
+        try {
+            PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
+                    "UPDATE comments SET  rating = ? WHERE id = ?;"
+            );
+            statement.setInt(1, comment.getRating() + rate);
+            statement.setLong(2, comment.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      *default returns Children comments for article , if article and comment are not null
      * */
     private List<CommentNode> getChildren(Comment comment, Article article, User user){
-        List<CommentNode> result = null;
+        List<CommentNode> result = new ArrayList<>();
         PreparedStatement statement = null;
         try {
             if (article != null){
@@ -72,7 +112,6 @@ public class CommentsRepositoryImpl implements CommentsRepository {
                         "SELECT * FROM comments JOIN users ON (users.id = comments.user_id) WHERE ? = article_id AND (parent_comment_id IS NULL OR " +
                                 "parent_comment_id = -1) ORDER BY rating DESC, publication_date ASC");
                 statement.setLong(1, article.getId());
-                System.out.println("article");
             } else {
                 statement = ConnectionSingleton.getConnection().prepareStatement(
                         "SELECT * FROM comments JOIN users ON (users.id = comments.user_id) WHERE ? = parent_comment_id AND article_id = ?" +
@@ -81,10 +120,8 @@ public class CommentsRepositoryImpl implements CommentsRepository {
                 statement.setLong(2, comment.getArticleID());
             }
             ResultSet resultSet = statement.executeQuery();
-            result = new ArrayList<>();
             while (resultSet.next()){
                 result.add(new CommentNodeImpl(createCommentLikeResultSetForUser(resultSet, user),
-                        //// TODO: 16.11.2016 bugfix
                         resultSet.getString("name"),
                         resultSet.getString("surname")));
             }

@@ -7,38 +7,38 @@ import java.time.OffsetDateTime;
  *         11-501
  */
 public class Comment {
-    private long id;
-    private long parentCommentID;
+    private Long id;
+    private Long parentCommentID;
     private long articleID;
     private long userID;
     private String text;
     private int rating;
     private OffsetDateTime publicationDateTime;
 
-    public Comment(long parentCommentID, long articleID, long userID, String text) {
-        this.id = -1;
+    public Comment(Long parentCommentID, long articleID, long userID, String text) {
+        this.id = null;
         this.parentCommentID = parentCommentID;
         this.articleID = articleID;
         this.userID = userID;
         this.text = text;
     }
 
-    public Comment(long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime) {
+    public Comment(Long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime) {
         this(parentCommentID, articleID, userID, text);
         this.publicationDateTime = publicationDateTime;
     }
 
-    public Comment(long id, long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime, int rating) {
+    public Comment(Long id, Long parentCommentID, long articleID, long userID, String text, OffsetDateTime publicationDateTime, int rating) {
         this(parentCommentID, articleID, userID, text, publicationDateTime);
         this.id = id;
         this.rating = rating;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getParentCommentID() {
+    public Long getParentCommentID() {
         return parentCommentID;
     }
 
@@ -60,6 +60,18 @@ public class Comment {
 
     public OffsetDateTime getPublicationDateTime() {
         return publicationDateTime;
+    }
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", parentCommentID=" + parentCommentID +
+                ", articleID=" + articleID +
+                ", userID=" + userID +
+                ", text='" + text + '\'' +
+                ", rating=" + rating +
+                ", publicationDateTime=" + publicationDateTime +
+                '}';
     }
 
 

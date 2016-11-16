@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class CommentNodeImpl implements CommentNode {
         this.comment = comment;
         this.authorName = name;
         this.authorSurname = surname;
+        this.children = new ArrayList<>();
     }
 
     @Override
@@ -38,6 +40,6 @@ public class CommentNodeImpl implements CommentNode {
 
     @Override
     public void setChildren(List<CommentNode> children) {
-        children.addAll(children);
+        this.children.addAll(children);
     }
 }

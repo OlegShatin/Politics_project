@@ -17,4 +17,8 @@ public interface CommentsRepository {
     List<CommentNode> getCommentsForArticleSortedByRatingForUser(Article article, User user);
 
     List<CommentNode> getChildrenCommentsSortedByRatingForUser(Comment comment, User user);
+
+    Comment getComment(long commentId, User user);
+
+    void changeCommentRating(Comment comment, int rate);
 }

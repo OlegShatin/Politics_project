@@ -1,10 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNode;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsService;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsServiceImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
@@ -37,7 +34,30 @@ public class NewsServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        User currentUser = (User)request.getSession().getAttribute("user");
+        if (currentUser != null && (currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.USER)) {
+            Long parentCommentId = null;
+            if (request.getParameter("parent_comment_id") != null) {
+                try {
+                    parentCommentId = Long.parseLong(request.getParameter("parent_comment_id"));
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                    response.sendRedirect("/404");
+                }
+            }
+            Comment newComment = new Comment(parentCommentId ,
+                    Long.parseLong(request.getParameter("a")), currentUser.getID(),
+                    request.getParameter("comment_text"),
+                    OffsetDateTime.now(currentUser.getTimezoneOffset()));
+            newComment = newsService.addComment(newComment);
+            if (newComment != null) {
+                response.sendRedirect("/news" + "?a=" + request.getParameter("a"));
+            } else {
+                response.sendRedirect("/news"+"?a=" + request.getParameter("a") +"&error=smth_wrong");
+            }
+        } else {
+            response.sendRedirect("/news"+"?a=" + request.getParameter("a") +"&error=access_denied");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,6 +67,7 @@ public class NewsServlet extends HttpServlet {
         HashMap<String, Object> root = new HashMap<>();
         root.put("user_role", currentUser.getRole());
         root.put("articles", newsService.getArticlesForUser(currentUser));
+        root.put("error", request.getParameter("error"));
         //// TODO: 10.11.2016 add clocks info
         //if required all news send news list, if required article - send article
         if (request.getParameter("a") == null) {
@@ -60,9 +81,6 @@ public class NewsServlet extends HttpServlet {
             }
             Article article = newsService.getArticle(articleNum , currentUser);
             root.put("article", article);
-            for (CommentNode commentNode: newsService.getCommentsOfArticleForUser(article, currentUser)){
-                System.out.println(commentNode.getComment().getText());
-            }
             root.put("comments", newsService.getCommentsOfArticleForUser(article, currentUser));
             Helper.render(request, response, "article.ftl", root);
         }

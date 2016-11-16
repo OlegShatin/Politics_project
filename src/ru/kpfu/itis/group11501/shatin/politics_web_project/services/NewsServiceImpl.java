@@ -43,8 +43,8 @@ public class NewsServiceImpl implements NewsService {
         for (CommentNode node: firstCommentsNodes) {
             Stack<CommentNode> stack = new Stack<>();
             stack.push(node);
-            List<CommentNode> childrenNodes = null;
-            CommentNode parentNode = null;
+            List<CommentNode> childrenNodes;
+            CommentNode parentNode;
             //DFS: node is first node, collections reverse list from db to save order when it will be pushed to stack
             while (!stack.isEmpty()) {
                 childrenNodes = commentsRepository.getChildrenCommentsSortedByRatingForUser(stack.peek().getComment(), user);
@@ -65,5 +65,20 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<Article> getArticlesForUser(User user) {
         return newsRepository.getArticlesForUser(user);
+    }
+
+    @Override
+    public Comment getCommentById(long commentId, User user) {
+        return commentsRepository.getComment(commentId, user);
+    }
+
+    @Override
+    public void upRatingForComment(Comment comment) {
+        commentsRepository.changeCommentRating(comment, 1);
+    }
+
+    @Override
+    public void downRatingForComment(Comment comment) {
+        commentsRepository.changeCommentRating(comment, -1);
     }
 }

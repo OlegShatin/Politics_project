@@ -5,6 +5,6 @@ CREATE TABLE comments(
   /* todo: add constraint on article_id = parent_comment.article_id*/
   parent_comment_id INT REFERENCES comments(id),
   comment_text TEXT NOT NULL,
-  publicaton_date TIMESTAMPTZ NOT NULL,
+  publication_date TIMESTAMPTZ NOT NULL,
   rating INT NOT NULL DEFAULT(0)
 )

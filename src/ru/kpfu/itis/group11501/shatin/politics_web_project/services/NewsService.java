@@ -20,4 +20,10 @@ public interface NewsService {
     List<CommentNode> getCommentsOfArticleForUser(Article article, User user);
 
     List<Article> getArticlesForUser(User user);
+
+    Comment getCommentById(long commentId, User user);
+
+    void upRatingForComment(Comment comment);
+
+    void downRatingForComment(Comment comment);
 }

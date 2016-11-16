@@ -71,6 +71,14 @@
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/news</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>commentRatingAjaxServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.ArticleAjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commentRatingAjaxServlet</servlet-name>
+        <url-pattern>/ajax-comment-rate</url-pattern>
+    </servlet-mapping>
 
 
 
