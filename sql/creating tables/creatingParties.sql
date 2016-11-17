@@ -1,4 +1,4 @@
 CREATE TABLE parties (
   id SERIAL PRIMARY KEY ,
-  seats_in_parlament INT
+  seats_in_parliament INT
 )

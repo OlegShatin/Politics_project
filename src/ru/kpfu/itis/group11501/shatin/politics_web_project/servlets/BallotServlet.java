@@ -4,6 +4,8 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionService;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,14 @@ import java.util.HashMap;
  */
 @WebServlet(name = "BallotServlet")
 public class BallotServlet extends HttpServlet {
+    private ElectionService electionService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        electionService = new ElectionServiceImpl();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -29,6 +39,8 @@ public class BallotServlet extends HttpServlet {
             Election election = electionService.getCurrentElectionForUser(user);
             HashMap<String, Object> root = new HashMap<>();
             root.put("candidates", election.getCandidates());
+            root.put("end_time", election.getFinishTime());
+            root.put("election_type", election.getType());
             root.put("error", request.getParameter("error"));
             Helper.render(request, response, "ballot.ftl", root);
         }
