@@ -30,7 +30,12 @@ public class BallotServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        User user = (User) request.getSession().getAttribute("user");
+        Election election = electionService.getCurrentElectionForUser(user);
+        if ((user.getRole() != Role.ADMIN || user.getRole() != Role.AGENT) && !electionService.userVotedOnElection(user, election)) {
+            //// TODO: 17.11.2016 continue
+            response.sendRedirect("/news");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

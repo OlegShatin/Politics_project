@@ -36,8 +36,8 @@
         <h3>Комментарии:</h3>
         <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
             <button class="btn btn-primary" role="button" data-toggle="collapse" data-parent="#accordion"
-               href="#collapse_main"
-               aria-expanded="true" aria-controls="collapse_main">
+                    href="#collapse_main"
+                    aria-expanded="true" aria-controls="collapse_main">
                 Комментировать
             </button>
             <div id="collapse_main" class="panel-collapse collapse"
@@ -64,8 +64,12 @@
         <#list comments as comment>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <label>${comment.getAuthorName()} ${comment.getAuthorSurname()}</label>
-
+                    <div>
+                        <label>${comment.getAuthorName()} ${comment.getAuthorSurname()}  </label>
+                    ${comment.getComment().getPublicationDateTime().getDayOfMonth()}.${comment.getComment().getPublicationDateTime().getMonth().getValue()}.${comment.getComment().getPublicationDateTime().getYear()?c}
+                        <#if comment.getComment().getPublicationDateTime().getHour() <10>0${comment.getComment().getPublicationDateTime().getHour()}<#else>${comment.getComment().getPublicationDateTime().getHour()}</#if>:<#if comment.getComment().getPublicationDateTime().getMinute() <10>0${comment.getComment().getPublicationDateTime().getMinute()}<#else>${comment.getComment().getPublicationDateTime().getMinute()}
+                    </#if>
+                    </div>
                     <p>${comment.getComment().getText()}</p>
                     <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
                         <button type="button" class="btn btn-success btn-xs"
@@ -125,8 +129,12 @@
         <div class="col-xs-11 col-xs-offset-1">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <label>${comm.getAuthorName()} ${comm.getAuthorSurname()}</label>
-
+                    <div>
+                        <label>${comm.getAuthorName()} ${comm.getAuthorSurname()}  </label>
+                    ${comm.getComment().getPublicationDateTime().getDayOfMonth()}.${comm.getComment().getPublicationDateTime().getMonth().getValue()}.${comm.getComment().getPublicationDateTime().getYear()?c}
+                        <#if comm.getComment().getPublicationDateTime().getHour() <10>0${comm.getComment().getPublicationDateTime().getHour()}<#else>${comm.getComment().getPublicationDateTime().getHour()}</#if>:<#if comm.getComment().getPublicationDateTime().getMinute() <10>0${comm.getComment().getPublicationDateTime().getMinute()}<#else>${comm.getComment().getPublicationDateTime().getMinute()}
+                        </#if>
+                    </div>
                     <p>${comm.getComment().getText()}</p>
                     <#if user_role.name() == "USER" || user_role.name() == "ADMIN">
                         <button type="button" class="btn btn-success btn-xs" onclick="up(${comm.getComment().getId()})">

@@ -25,4 +25,9 @@ public class ElectionServiceImpl implements ElectionService {
         result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result));
         return result;
     }
+
+    @Override
+    public boolean userVotedOnElection(User user, Election election) {
+        return electionRepository.userVotedOnElection(user, election);
+    }
 }

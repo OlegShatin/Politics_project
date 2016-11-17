@@ -44,6 +44,21 @@ public class ElectionRepositoryImpl implements ElectionRepository {
         return result;
     }
 
+    @Override
+    public boolean userVotedOnElection(User user, Election election) {
+        try {
+            PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
+                    "SELECT * FROM votes WHERE ? = user_id AND ? = election_id");
+            statement.setLong(1,user.getID());
+            statement.setLong(2, election.getId());
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private Election createElectionByResultSetForUser(ResultSet resultSet, User user) throws SQLException {
         Election result = new Election(resultSet.getLong("id"),
                 ElectionType.valueOf(resultSet.getString("type")),

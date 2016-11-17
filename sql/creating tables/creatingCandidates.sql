@@ -3,7 +3,7 @@ CREATE TABLE candidates (
   party INT REFERENCES parties(id),
   name VARCHAR(64) NOT NULL ,
   info TEXT,
-  achievments TEXT,
+  achievements TEXT,
   election_program TEXT,
   image_src VARCHAR(64),
   /*todo: add constrain only agents users can be agent_id referenced*/

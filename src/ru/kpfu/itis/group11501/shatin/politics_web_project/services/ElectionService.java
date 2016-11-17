@@ -9,4 +9,6 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
  */
 public interface ElectionService {
     Election getCurrentElectionForUser(User user);
+
+    boolean userVotedOnElection(User user, Election election);
 }
