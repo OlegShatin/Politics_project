@@ -21,7 +21,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         try {
             if (election.getType() == ElectionType.PARLIAMENT) {
                 PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
-                        "SELECT * FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
+                        "SELECT candidates.*, parties.*, parties.id AS party_id FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
                                 " JOIN parties ON (candidates.party = parties.id)WHERE ? = election_id");
                 statement.setLong(1, election.getId());
                 ResultSet resultSet = statement.executeQuery();
@@ -31,7 +31,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             } else {
                 if (election.getType() == ElectionType.PRESIDENT) {
                     PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
-                            "SELECT * FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id) WHERE ? = election_id");
+                            "SELECT candidates.* FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id) WHERE ? = election_id");
+                    statement.setLong(1, election.getId());
                     ResultSet resultSet = statement.executeQuery();
                     while (resultSet.next()) {
                         result.add(createCandidatePresidentByResultSet(resultSet));
@@ -51,16 +52,16 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return createCandidateByResultSet(resultSet, true);
     }
     private Candidate createCandidateByResultSet(ResultSet resultSet, boolean isParty) throws SQLException {
-        return new Candidate(resultSet.getLong("candidates.id"),
-                resultSet.getString("candidates.name"),
-                resultSet.getString("candidates.info"),
-                resultSet.getString("candidates.achievements"),
-                resultSet.getString("candidates.election_program"),
-                resultSet.getString("candidates.image_src"),
-                resultSet.getLong("candidates.agent_id"),
-                isParty ? new Party(resultSet.getLong("parties.id"),
-                        resultSet.getInt("parties.seats_in_parliament"),
-                        getSupportersForPartyByPartyId(resultSet.getLong("parties.id"))
+        return new Candidate(resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getString("info"),
+                resultSet.getString("achievements"),
+                resultSet.getString("election_program"),
+                resultSet.getString("image_src"),
+                resultSet.getLong("agent_id"),
+                isParty ? new Party(resultSet.getLong("party_id"),
+                        resultSet.getInt("seats_in_parliament"),
+                        getSupportersForPartyByPartyId(resultSet.getLong("party_id"))
                         ) : null);
     }
     private List<Supporter> getSupportersForPartyByPartyId(Long partyId){

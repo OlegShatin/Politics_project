@@ -54,7 +54,6 @@ public class NewsRepositoryImpl implements NewsRepository {
         return result;
     }
     private Article createArticleByResultSetForUser(ResultSet resultSet, User user) throws SQLException {
-        System.out.println( );
         return new Article(resultSet.getLong("id"), resultSet.getString("headline"),
                 resultSet.getString("content"),
                 OffsetDateTime.ofInstant(resultSet.getTimestamp("datetime").toInstant(), ZoneOffset.ofHours(resultSet.getTimestamp("datetime").getTimezoneOffset()/60))

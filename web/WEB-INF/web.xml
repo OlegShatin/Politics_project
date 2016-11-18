@@ -80,6 +80,16 @@
         <url-pattern>/ajax-comment-rate</url-pattern>
     </servlet-mapping>
 
+    <!-- Ballot -->
+    <servlet>
+        <servlet-name>ballotServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.BallotServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ballotServlet</servlet-name>
+        <url-pattern>/ballot</url-pattern>
+    </servlet-mapping>
+
 
 
 
@@ -87,6 +97,7 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>

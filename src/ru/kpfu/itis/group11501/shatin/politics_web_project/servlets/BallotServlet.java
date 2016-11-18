@@ -32,22 +32,39 @@ public class BallotServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         Election election = electionService.getCurrentElectionForUser(user);
-        if ((user.getRole() != Role.ADMIN || user.getRole() != Role.AGENT) && !electionService.userVotedOnElection(user, election)) {
-            //// TODO: 17.11.2016 continue
-            response.sendRedirect("/news");
+        if (user.getRole() == Role.USER && !electionService.userVotedOnElection(user, election)) {
+            Long votedCandidateId = null;
+            try {
+                votedCandidateId = Long.parseLong(request.getParameter("voted_candidate"));
+                if (electionService.addVoteForCandidate(user, election, votedCandidateId)) {
+                    response.sendRedirect("/news?alert=thanks");
+                } else {
+                    response.sendRedirect("/ballot?error=your_vote_was_not_accepted");
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.sendRedirect("/ballot?error=incorrect_input");
+            }
+        } else {
+            response.sendRedirect("/news?error=access_denied");
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        if (user.getRole() != Role.ADMIN || user.getRole() != Role.AGENT) {
-            Election election = electionService.getCurrentElectionForUser(user);
+        Election election = electionService.getCurrentElectionForUser(user);
+        if (user.getRole() == Role.USER && !electionService.userVotedOnElection(user, election)) {
+
             HashMap<String, Object> root = new HashMap<>();
+            root.put("user_role", user.getRole());
             root.put("candidates", election.getCandidates());
             root.put("end_time", election.getFinishTime());
             root.put("election_type", election.getType());
+            root.put("election_finish", election.getFinishTime());
             root.put("error", request.getParameter("error"));
             Helper.render(request, response, "ballot.ftl", root);
+        } else {
+            response.sendRedirect("/news?error=access_denied");
         }
     }
 }

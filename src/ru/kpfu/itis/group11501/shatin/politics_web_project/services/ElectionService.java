@@ -11,4 +11,6 @@ public interface ElectionService {
     Election getCurrentElectionForUser(User user);
 
     boolean userVotedOnElection(User user, Election election);
+
+    boolean addVoteForCandidate(User user, Election election, Long votedCandidateId);
 }

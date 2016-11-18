@@ -38,7 +38,7 @@
     </div>
 </div>
 <div class="row">
-    <form class="form-horizontal" action="/signup">
+    <form class="form-horizontal" action="/signup" method="get">
         <div class="form-group">
             <label for="signup_button" class="col-md-offset-3 col-md-2 control-label" id="signup_label">Впервые у
                 нас?</label>

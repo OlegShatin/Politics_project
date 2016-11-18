@@ -2,10 +2,7 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsServiceImpl;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,12 +22,14 @@ public class NewsServlet extends HttpServlet {
 
     private NewsService newsService;
     private UserService userService;
+    private ElectionService electionService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         this.newsService = new NewsServiceImpl();
         this.userService = new UserServiceImpl();
+        this.electionService = new ElectionServiceImpl();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,15 +61,17 @@ public class NewsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get user from session or create Guest user
-        User currentUser = (User) request.getSession().getAttribute("user") != null ?
+        User user = (User) request.getSession().getAttribute("user") != null ?
                 (User) request.getSession().getAttribute("user") : userService.getGuest();
         HashMap<String, Object> root = new HashMap<>();
-        root.put("user_role", currentUser.getRole());
-        root.put("articles", newsService.getArticlesForUser(currentUser));
+        root.put("user_role", user.getRole());
         root.put("error", request.getParameter("error"));
         //// TODO: 10.11.2016 add clocks info
         //if required all news send news list, if required article - send article
         if (request.getParameter("a") == null) {
+            root.put("articles", newsService.getArticlesForUser(user));
+            Election election = electionService.getCurrentElectionForUser(user);
+            root.put("user_cannot_vote", (user.getRole() != Role.USER || election == null || electionService.userVotedOnElection(user, election)));
             Helper.render(request, response, "news.ftl", root);
         } else {
             long articleNum = 0;
@@ -79,9 +80,9 @@ public class NewsServlet extends HttpServlet {
             } catch (NumberFormatException e){
                 response.sendRedirect("/404");
             }
-            Article article = newsService.getArticle(articleNum , currentUser);
+            Article article = newsService.getArticle(articleNum , user);
             root.put("article", article);
-            root.put("comments", newsService.getCommentsOfArticleForUser(article, currentUser));
+            root.put("comments", newsService.getCommentsOfArticleForUser(article, user));
             Helper.render(request, response, "article.ftl", root);
         }
     }

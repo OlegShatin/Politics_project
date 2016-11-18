@@ -87,6 +87,13 @@
                             Ответить
                         </a>
                     <#else>
+                        <button type="button" class="btn btn-success btn-xs disabled">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </button>
+                        <label id="counter${comment.getComment().getId()}">${comment.getComment().getRating()}</label>
+                        <button type="button" class="btn btn-danger btn-xs disabled">
+                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                        </button>
                         <a class="small" href="/login">Ответить</a>
                     </#if>
                 </div>

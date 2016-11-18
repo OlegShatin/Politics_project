@@ -16,20 +16,28 @@
 <#macro content>
 <!-- Page Heading -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-md-offset-2 col-md-8">
         <h1 class="page-header"> Последние новости
-            <small>(что-то если вдруг надо)</small>
         </h1>
-        <a class="btn btn-block btn-success <#if user_role.name() == "AGENT" || user_role.name() == "ADMIN">disabled</#if>"
-           href="<#if user_role.name() == "GUEST">/login<#else>/ballot</#if>" role=button">Проголосовать</a>
+        <#if error?has_content><p>${error}</p></#if>
+        <a class="btn btn-block btn-success <#if user_cannot_vote>disabled</#if>"
+           href="/ballot" role=button">Проголосовать</a>
+        <#if user_role.name() == "GUEST">
+            <div class="row" align="center">
+                <div class="col-md-offset-2 col-md-8">
+                    <label>Чтобы голосовать на выборах, нужно <a href="/login">войти на сайт</a></label>
+                </div>
+            </div>
+        </#if>
     </div>
 </div>
 <!-- /.row -->
 
     <#list articles as article>
-    <hr>
+
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
+            <hr>
             <h3>${article.headline}</h3>
             <h4>${article.publicationDateTime.getDayOfMonth()}
                 .${article.publicationDateTime.month.getValue()}.${article.publicationDateTime.year?c}
@@ -46,7 +54,8 @@
             </h4>
 
             <p>${article.content}</p>
-            <a class="btn btn-primary" href="/news?a=${article.getId()}">Подробнее <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <a class="btn btn-primary" href="/news?a=${article.getId()}">Подробнее <span
+                    class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
     </div>
     <#else>

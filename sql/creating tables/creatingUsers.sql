@@ -15,5 +15,6 @@
   password_hash   VARCHAR(40) NOT NULL,
   timezone INT NOT NULL DEFAULT (0),
   role VARCHAR(16) NOT NULL REFERENCES user_roles(role) DEFAULT ('user')
-)
-	
+);
+INSERT INTO users (name, surname, patronymic, birthday, email, passport_series, passport_number, password_hash, timezone, role)
+VALUES ('admin','admin',NULL,'1980-01-08','admin@mail.ru','0000','000000','7110eda4d09e62aa5e4a390b0a572acd2c220',3,'ADMIN');
