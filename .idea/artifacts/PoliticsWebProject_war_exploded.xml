@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="PoliticsWebProject:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/PoliticsWebProject_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="PoliticsWebProject/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="PoliticsWebProject" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="freemarker" />
+          <element id="library" level="project" name="postgresql-9.3-1103.jdbc3" />
+          <element id="library" level="project" name="org.json" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
