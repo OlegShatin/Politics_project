@@ -1,10 +1,11 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.UserRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

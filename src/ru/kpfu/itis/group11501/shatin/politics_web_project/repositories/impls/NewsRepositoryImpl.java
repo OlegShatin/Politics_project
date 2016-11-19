@@ -1,8 +1,9 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

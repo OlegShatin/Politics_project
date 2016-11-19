@@ -1,9 +1,10 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import com.sun.xml.internal.bind.v2.TODO;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

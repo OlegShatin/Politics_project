@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.helpers;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 

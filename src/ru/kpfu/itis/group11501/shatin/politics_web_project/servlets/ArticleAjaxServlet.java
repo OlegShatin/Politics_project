@@ -3,9 +3,9 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.NewsServiceImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 
 /**
  * @author Oleg Shatin

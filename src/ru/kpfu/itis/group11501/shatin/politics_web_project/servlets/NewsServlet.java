@@ -3,6 +3,9 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.servlets;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.*;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.ElectionServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.NewsServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,7 +63,10 @@ public class NewsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("debugnews");
+        System.out.println("текст");
         //get user from session or create Guest user
+        System.out.println("testtext");
         User user = (User) request.getSession().getAttribute("user") != null ?
                 (User) request.getSession().getAttribute("user") : userService.getGuest();
         HashMap<String, Object> root = new HashMap<>();

@@ -1,7 +1,8 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CommentsRepository;
 
 import java.sql.*;
 import java.time.OffsetDateTime;

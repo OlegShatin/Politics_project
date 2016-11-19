@@ -4,7 +4,7 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.HashMap;
 
 /**

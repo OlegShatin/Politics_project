@@ -1,12 +1,12 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
-
+package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CandidateRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CandidateRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.CandidateRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.ElectionRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.ElectionRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.ElectionRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionService;
 
 /**
  * @author Oleg Shatin
