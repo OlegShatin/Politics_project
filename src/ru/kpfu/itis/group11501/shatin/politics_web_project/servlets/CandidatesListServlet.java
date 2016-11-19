@@ -12,6 +12,7 @@ import java.io.IOException;
  *         11-501
  */
 @WebServlet(name = "CandidatesListServlet")
+@Deprecated
 public class CandidatesListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

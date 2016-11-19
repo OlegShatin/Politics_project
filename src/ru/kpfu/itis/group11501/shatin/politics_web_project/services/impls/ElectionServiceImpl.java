@@ -25,7 +25,7 @@ public class ElectionServiceImpl implements ElectionService {
     public Election getCurrentElectionForUser(User user) {
         Election result = electionRepository.getCurrentRawElectionForUser(user);
         if (result != null) {
-            result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result));
+            result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result, false));
         }
         return result;
     }
@@ -53,5 +53,23 @@ public class ElectionServiceImpl implements ElectionService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Election getNextElectionForUser(User user) {
+        Election result = electionRepository.getNextRawElectionForUser(user);
+        if (result != null) {
+            result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result, false));
+        }
+        return result;
+    }
+
+    @Override
+    public Candidate getCandidate(long candidateNum, Election election) {
+        for (Candidate candidate: election.getCandidates()){
+            if (candidate.getId() == candidateNum)
+                return candidate;
+        }
+        return null;
     }
 }
