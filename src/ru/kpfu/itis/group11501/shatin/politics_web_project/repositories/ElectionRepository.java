@@ -16,4 +16,6 @@ public interface ElectionRepository {
     boolean addVoteForCandidate(Election election, Candidate candidate);
 
     void addVotedUser(Election election, User user);
+
+    Election getNextRawElectionForUser(User user);
 }

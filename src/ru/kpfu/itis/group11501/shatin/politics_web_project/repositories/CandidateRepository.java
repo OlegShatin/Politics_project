@@ -3,7 +3,6 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -11,5 +10,5 @@ import java.util.List;
  *         11-501
  */
 public interface CandidateRepository {
-    List<Candidate> getCandidatesForElection(Election election);
+    List<Candidate> getCandidatesForElection(Election election, boolean includeDefaultCandidates);
 }

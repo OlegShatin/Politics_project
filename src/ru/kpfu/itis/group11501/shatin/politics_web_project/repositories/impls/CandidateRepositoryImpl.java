@@ -1,7 +1,6 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CandidateRepository;
 
@@ -16,14 +15,20 @@ import java.util.List;
  *         11-501
  */
 public class CandidateRepositoryImpl implements CandidateRepository {
+    /**
+     * @param election - collect candidates for this election
+     * @param includeDefaultCandidates - flag, include technical default candidates ('Empty Ballot' and 'To spoil ballot') or don't
+     * @return list of candidates
+     */
     @Override
-    public List<Candidate> getCandidatesForElection(Election election) {
+    public List<Candidate> getCandidatesForElection(Election election, boolean includeDefaultCandidates) {
         List<Candidate> result = new ArrayList<>();
         try {
+            String toInsert = includeDefaultCandidates? "" : " AND NOT (candidates.id = 1 OR candidates.id = 2)";
             if (election.getType() == ElectionType.PARLIAMENT) {
                 PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                         "SELECT candidates.*, parties.*, parties.id AS party_id FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
-                                " JOIN parties ON (candidates.party = parties.id)WHERE ? = election_id");
+                                " JOIN parties ON (candidates.party = parties.id)WHERE ? = election_id" + toInsert);
                 statement.setLong(1, election.getId());
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
@@ -32,7 +37,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             } else {
                 if (election.getType() == ElectionType.PRESIDENT) {
                     PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
-                            "SELECT candidates.* FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id) WHERE ? = election_id");
+                            "SELECT candidates.* FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id) WHERE ? = election_id" + toInsert);
                     statement.setLong(1, election.getId());
                     ResultSet resultSet = statement.executeQuery();
                     while (resultSet.next()) {

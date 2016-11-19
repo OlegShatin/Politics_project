@@ -28,11 +28,23 @@ public class ElectionRepositoryImpl implements ElectionRepository {
      */
     @Override
     public Election getCurrentRawElectionForUser(User user) {
+        return getElection(user, true);
+    }
+
+    @Override
+    public Election getNextRawElectionForUser(User user) {
+        return getElection(user, false);
+    }
+
+    private Election getElection(User user, boolean requiredCurrentElection) {
         Election result = null;
         try {
+            String toInsert = requiredCurrentElection? "BETWEEN start_time AND" : "<";
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "SELECT * FROM elections WHERE ? BETWEEN start_time AND finish_time");
+                    "SELECT * FROM elections WHERE ? " + toInsert + " finish_time ORDER BY finish_time");
             //hard for understanding:
+            System.out.println(new Timestamp(OffsetDateTime.now().withOffsetSameInstant(user.getTimezoneOffset())
+                    .withOffsetSameLocal(OffsetDateTime.now().getOffset()).toInstant().toEpochMilli()));
             statement.setTimestamp(1, new Timestamp(OffsetDateTime.now().withOffsetSameInstant(user.getTimezoneOffset())
                     .withOffsetSameLocal(OffsetDateTime.now().getOffset()).toInstant().toEpochMilli()));
             ResultSet resultSet = statement.executeQuery();
@@ -102,6 +114,7 @@ public class ElectionRepositoryImpl implements ElectionRepository {
             }
         }
     }
+
 
     private Election createElectionByResultSetForUser(ResultSet resultSet, User user) throws SQLException {
         return new Election(resultSet.getLong("id"),
