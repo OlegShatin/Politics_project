@@ -1,10 +1,10 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.helpers;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieMaster;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;
 
 
 import javax.servlet.http.Cookie;

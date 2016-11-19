@@ -5,7 +5,7 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionService;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.ElectionServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

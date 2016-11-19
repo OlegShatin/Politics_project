@@ -1,10 +1,11 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.ConnectionSingleton;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.ElectionType;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.ElectionRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,6 +37,8 @@ public class ElectionRepositoryImpl implements ElectionRepository {
                     .withOffsetSameLocal(OffsetDateTime.now().getOffset()).toInstant().toEpochMilli()));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
+                System.out.println("debug");
+                System.out.println(resultSet.getTimestamp("start_time").getTimezoneOffset()/60);
                 result = createElectionByResultSetForUser(resultSet, user);
             }
         } catch (SQLException e) {

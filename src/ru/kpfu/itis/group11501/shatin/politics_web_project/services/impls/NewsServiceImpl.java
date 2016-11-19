@@ -1,13 +1,14 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Article;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Comment;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.CommentNode;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CommentsRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CommentsRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.CommentsRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepository;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.NewsRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.NewsRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.NewsService;
 
 import java.util.ArrayList;
 import java.util.Collections;
