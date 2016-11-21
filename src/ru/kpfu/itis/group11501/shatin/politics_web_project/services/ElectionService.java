@@ -17,5 +17,4 @@ public interface ElectionService {
 
     Election getNextElectionForUser(User user);
 
-    Candidate getCandidate(long candidateNum, Election election);
 }

@@ -58,7 +58,6 @@ public class BallotServlet extends HttpServlet {
             HashMap<String, Object> root = new HashMap<>();
             root.put("user_role", user.getRole());
             root.put("candidates", election.getCandidates());
-            root.put("end_time", election.getFinishTime());
             root.put("election_type", election.getType());
             root.put("election_finish", election.getFinishTime());
             root.put("error", request.getParameter("error"));

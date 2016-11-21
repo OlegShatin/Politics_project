@@ -67,12 +67,7 @@
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.NewsServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>NewsServlet</servlet-name>
-        <url-pattern>/news</url-pattern>
-        <url-pattern>/</url-pattern>
-        <url-pattern>default</url-pattern>
-    </servlet-mapping>
+
     <servlet>
         <servlet-name>commentRatingAjaxServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.ArticleAjaxServlet</servlet-class>
@@ -92,7 +87,15 @@
         <url-pattern>/ballot</url-pattern>
     </servlet-mapping>
 
-
+    <!-- Candidates -->
+    <servlet>
+        <servlet-name>candidatesServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.CandidatesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>candidatesServlet</servlet-name>
+        <url-pattern>/candidates</url-pattern>
+    </servlet-mapping>
 
 
     <!-- Technical -->
@@ -100,6 +103,7 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.png</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -124,5 +128,11 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.woff2</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>NewsServlet</servlet-name>
+        <url-pattern>/news</url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 </web-app>

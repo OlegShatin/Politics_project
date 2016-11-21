@@ -19,7 +19,11 @@
     <div class="col-md-offset-2 col-md-8">
         <h1 class="page-header"> Последние новости
         </h1>
-        <#if error?has_content><p>${error}</p></#if>
+        <#if error?has_content>
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> ${error}
+            </div>
+        </#if>
         <a class="btn btn-block btn-success <#if user_cannot_vote>disabled</#if>"
            href="/ballot" role=button">Проголосовать</a>
         <#if user_role.name() == "GUEST">

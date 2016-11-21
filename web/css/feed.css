@@ -30,3 +30,18 @@ footer {
 .panel-body > p {
     margin-bottom: 0px;
 }
+.valign {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.round_icon_small, .round_icon_big {
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+
+}
+.round_icon_small {
+    width: 100px;
+    height: 100px;
+}

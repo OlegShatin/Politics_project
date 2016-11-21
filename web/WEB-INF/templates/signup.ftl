@@ -15,6 +15,11 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1 class="page-header"> Регистрация </h1>
+        <#if error?has_content>
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> ${error}
+            </div>
+        </#if>
     </div>
 </div>
 <!-- /.row -->
@@ -22,7 +27,6 @@
 <div>
     <form method="post">
         <div class="row">
-            <#if error?has_content><p>${error}</p></#if>
             <div class="col-md-4 col-md-offset-2">
                 <h3>Имя</h3>
                 <input class="input-lg" type="text" name="name">

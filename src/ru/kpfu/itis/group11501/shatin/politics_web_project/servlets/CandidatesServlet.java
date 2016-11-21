@@ -45,24 +45,12 @@ public class CandidatesServlet extends HttpServlet {
         root.put("user_role", user.getRole());
         root.put("error", request.getParameter("error"));
         Election election = electionService.getNextElectionForUser(user);
-        //if required all candidates send news list, if required the candidate - send candidate
         if (election != null) {
-            if (request.getParameter("c") == null) {
-                root.put("candidates", election.getCandidates());
-                Helper.render(request, response, "candidates.ftl", root);
-            } else {
-                long candidateNum = 0;
-                try {
-                    candidateNum = Long.parseLong(request.getParameter("a"));
-                } catch (NumberFormatException e) {
-                    response.sendRedirect("/404");
-                }
-                Candidate candidate = electionService.getCandidate(candidateNum, election);
-                root.put("candidate", candidate);
-                Helper.render(request, response, "candidate.ftl", root);
-            }
+            root.put("election", election);
+            root.put("candidates", election.getCandidates());
+            Helper.render(request, response, "candidates.ftl", root);
         } else {
-            Helper.render(request,response,"no_elections.ftl", root);
+            Helper.render(request, response, "no_elections.ftl", root);
         }
     }
 }
