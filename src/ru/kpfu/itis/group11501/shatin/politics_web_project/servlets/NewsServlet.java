@@ -63,10 +63,8 @@ public class NewsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("debugnews");
-        System.out.println("текст");
+
         //get user from session or create Guest user
-        System.out.println("testtext");
         User user = (User) request.getSession().getAttribute("user") != null ?
                 (User) request.getSession().getAttribute("user") : userService.getGuest();
         HashMap<String, Object> root = new HashMap<>();

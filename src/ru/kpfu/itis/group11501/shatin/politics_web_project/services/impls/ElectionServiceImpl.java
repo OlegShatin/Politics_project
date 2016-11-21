@@ -64,12 +64,5 @@ public class ElectionServiceImpl implements ElectionService {
         return result;
     }
 
-    @Override
-    public Candidate getCandidate(long candidateNum, Election election) {
-        for (Candidate candidate: election.getCandidates()){
-            if (candidate.getId() == candidateNum)
-                return candidate;
-        }
-        return null;
-    }
+
 }

@@ -21,7 +21,11 @@
         <h1 class="page-header">Избирательный бюллетень<br/><small><#if election_type.name() == 'PRESIDENT'>Президентские выборы</#if><br/>Выборы закончатся: ${election_finish.getDayOfMonth()}.${election_finish.getMonth().getValue()}.${election_finish.getYear()?c}
             <#if election_finish.getHour() <10>0${election_finish.getHour()}<#else>${election_finish.getHour()}</#if>:<#if election_finish.getMinute() <10>0${election_finish.getMinute()}<#else>${election_finish.getMinute()}
             </#if></small></h1>
-        <#if error?has_content><p>${error}</p></#if>
+        <#if error?has_content>
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> ${error}
+            </div>
+        </#if>
     </div>
 </div>
 <form  action="/ballot" method="post">

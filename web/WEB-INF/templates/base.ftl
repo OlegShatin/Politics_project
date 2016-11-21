@@ -34,7 +34,7 @@
                     <a href="/news">Новости</a>
                 </li>
                 <li>
-                    <a href="#">Кандидаты</a>
+                    <a href="/candidates">Кандидаты</a>
                 </li>
                 <li>
                     <a href="#">Статистика</a>

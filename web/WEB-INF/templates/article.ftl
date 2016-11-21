@@ -19,6 +19,11 @@
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
         <h1 class="page-header">${article.getHeadline()}</h1>
+        <#if error?has_content>
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> ${error}
+            </div>
+        </#if>
     </div>
 </div>
 <!-- /.row -->
@@ -30,7 +35,7 @@
         <hr/>
     </div>
 </div>
-    <#if error?has_content><p>${error}</p></#if>
+
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
         <h3>Комментарии:</h3>
