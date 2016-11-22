@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Message;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 

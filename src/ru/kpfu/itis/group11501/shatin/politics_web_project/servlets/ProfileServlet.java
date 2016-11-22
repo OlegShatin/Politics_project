@@ -31,6 +31,7 @@ public class ProfileServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //// TODO: 21.11.2016 implement this
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,6 +47,7 @@ public class ProfileServlet extends HttpServlet {
                 Candidate candidate = candidateService.getCandidateForAgent(user);
                 if (candidate != null) {
                     root.put("candidate", candidate);
+                    Helper.render(request,response,"candidateProfile.ftl", root);
                 } else {
                     response.sendRedirect("/404");
                 }

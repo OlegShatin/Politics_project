@@ -1,7 +1,8 @@
-package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls;
+package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieMaster;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.CookieRepositoryImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.CookieMaster;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;

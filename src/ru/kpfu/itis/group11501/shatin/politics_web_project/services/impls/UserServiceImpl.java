@@ -1,9 +1,12 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.helpers.Helper;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Message;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.MessageRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.UserRepository;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.MessageRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.UserRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 
@@ -16,11 +19,14 @@ import java.util.regex.Pattern;
  *         11-501
  */
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
-    public final Pattern PASS_SERIES_PATTERN;
-    public final Pattern PASS_NUMBER_PATTERN;
+    private UserRepository userRepository;
+    private final Pattern PASS_SERIES_PATTERN;
+    private final Pattern PASS_NUMBER_PATTERN;
+    private MessageRepository messageRepository;
+
     public UserServiceImpl(){
         userRepository = new UserRepositoryImpl();
+        messageRepository = new MessageRepositoryImpl();
         PASS_SERIES_PATTERN
             = Pattern.compile("(^[0-9]{4}$)");
         PASS_NUMBER_PATTERN = Pattern.compile("(^[0-9]{6}$)");
@@ -64,7 +70,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getGuest() {
-        //// TODO: 09.11.2016 fix this hardcode: required time offset session atribute
+        //// TODO: 09.11.2016 fix this hardcode: required time offset session attribute
         return new User(Role.GUEST, OffsetDateTime.now().getOffset());
+    }
+
+    @Override
+    public Message addMessage(User sender, Long recipientId, String messageText) {
+        Message newMessage = new Message(
+                sender.getID(),
+                recipientId,
+                messageText,
+                OffsetDateTime.now(sender.getTimezoneOffset())
+        );
+        return messageRepository.addMessage(newMessage);
     }
 }

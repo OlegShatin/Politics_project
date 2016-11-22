@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
 
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Message;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 
@@ -27,4 +28,6 @@ public interface UserService {
     User getUser(long userId);
 
     User getGuest();
+
+    Message addMessage(User sender, Long recipientId, String messageText);
 }

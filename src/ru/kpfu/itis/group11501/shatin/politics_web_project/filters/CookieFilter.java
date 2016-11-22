@@ -1,7 +1,7 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.filters;
 
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CookieMaster;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.CookieMasterImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.CookieMaster;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.CookieMasterImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 
 import javax.servlet.*;

@@ -43,14 +43,11 @@ public class ElectionRepositoryImpl implements ElectionRepository {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "SELECT * FROM elections WHERE ? " + toInsert + " finish_time ORDER BY finish_time");
             //hard for understanding:
-            System.out.println(new Timestamp(OffsetDateTime.now().withOffsetSameInstant(user.getTimezoneOffset())
-                    .withOffsetSameLocal(OffsetDateTime.now().getOffset()).toInstant().toEpochMilli()));
             statement.setTimestamp(1, new Timestamp(OffsetDateTime.now().withOffsetSameInstant(user.getTimezoneOffset())
                     .withOffsetSameLocal(OffsetDateTime.now().getOffset()).toInstant().toEpochMilli()));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                System.out.println("debug");
-                System.out.println(resultSet.getTimestamp("start_time").getTimezoneOffset()/60);
+                //// TODO: 22.11.2016 some bug with default server offset
                 result = createElectionByResultSetForUser(resultSet, user);
             }
         } catch (SQLException e) {

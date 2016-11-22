@@ -33,6 +33,11 @@
                 <strong>Oh snap!</strong> ${error}
             </div>
         </#if>
+        <#if success_message_candidate?has_content>
+            <div class="alert alert-success" role="alert">
+                <strong>Ваше сообщение отправлено!</strong> <a href="conversations?id=${success_message_candidate.getId()}">перейти к диалогу</a>
+            </div>
+        </#if>
     </div>
 </div>
 
