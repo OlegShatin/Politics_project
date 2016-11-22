@@ -132,8 +132,11 @@ public class CommentsRepositoryImpl implements CommentsRepository {
         return result;
     }
     private Comment createCommentLikeResultSetForUser(ResultSet resultSet, User user) throws SQLException {
-        return new Comment(resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
-                resultSet.getLong("article_id"),resultSet.getLong("user_id"),resultSet.getString("comment_text"),
+        return new Comment(
+                resultSet.getLong("id"), resultSet.getLong("parent_comment_id"),
+                resultSet.getLong("article_id"),
+                resultSet.getLong("user_id"),
+                resultSet.getString("comment_text"),
                 OffsetDateTime.ofInstant(resultSet.getTimestamp("publication_date").toInstant(),
                         ZoneOffset.ofHours(resultSet.getTimestamp("publication_date").getTimezoneOffset()/60))
                         .withOffsetSameInstant(user.getTimezoneOffset()),
