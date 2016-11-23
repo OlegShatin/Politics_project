@@ -1,6 +1,5 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.models;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
@@ -18,6 +17,22 @@ public class User {
     private String patronymic;
     private Role role;
     private ZoneOffset timezoneOffset;
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
 
     public User(String hashedPassword, String email, long id, Role role, ZoneOffset timezoneOffset, LocalDate birthday, String name, String surname, String patronymic) {
         this(role, timezoneOffset);
@@ -43,7 +58,7 @@ public class User {
         return email;
     }
 
-    public long getID() {
+    public long getId() {
         return id;
     }
 

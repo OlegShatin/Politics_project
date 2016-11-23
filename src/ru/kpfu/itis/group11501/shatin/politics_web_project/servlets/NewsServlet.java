@@ -48,7 +48,7 @@ public class NewsServlet extends HttpServlet {
                 }
             }
             Comment newComment = new Comment(parentCommentId ,
-                    Long.parseLong(request.getParameter("a")), currentUser.getID(),
+                    Long.parseLong(request.getParameter("a")), currentUser.getId(),
                     request.getParameter("comment_text"),
                     OffsetDateTime.now(currentUser.getTimezoneOffset()));
             newComment = newsService.addComment(newComment);

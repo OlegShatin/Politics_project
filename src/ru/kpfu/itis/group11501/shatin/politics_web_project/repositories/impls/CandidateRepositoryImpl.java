@@ -56,8 +56,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "SELECT candidates.*, parties.*, parties.id AS party_id FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
-                            " JOIN parties ON (candidates.party = parties.id)WHERE ? = agent_id");
-            statement.setLong(1, agent.getID());
+                            " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = agent_id");
+            statement.setLong(1, agent.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getLong("party_id");

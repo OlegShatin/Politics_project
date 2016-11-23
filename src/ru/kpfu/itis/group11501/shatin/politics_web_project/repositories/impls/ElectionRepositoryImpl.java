@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class ElectionRepositoryImpl implements ElectionRepository {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "SELECT * FROM votes WHERE ? = user_id AND ? = election_id");
-            statement.setLong(1,user.getID());
+            statement.setLong(1,user.getId());
             statement.setLong(2, election.getId());
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
@@ -103,7 +102,7 @@ public class ElectionRepositoryImpl implements ElectionRepository {
             try {
                 PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                         "INSERT INTO votes(user_id, election_id) VALUES (?,?)");
-                statement.setLong(1,user.getID());
+                statement.setLong(1,user.getId());
                 statement.setLong(2, election.getId());
                 statement.executeUpdate();
             } catch (SQLException e) {

@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 /**
  * @author Oleg Shatin
@@ -24,7 +23,7 @@ public class CookieRepositoryImpl implements CookieRepository {
         try {
             statement = ConnectionSingleton.getConnection().prepareStatement(
                     "SELECT * FROM cookies WHERE cookies.user_id = ?");
-            statement.setLong(1, currentUser.getID());
+            statement.setLong(1, currentUser.getId());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 result = new Cookie(cookieName, updateUserCookie(currentUser));
@@ -74,7 +73,7 @@ public class CookieRepositoryImpl implements CookieRepository {
         PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                 "INSERT INTO cookies VALUES(?,?)");
         statement.setString(2, result);
-        statement.setLong(1, currentUser.getID());
+        statement.setLong(1, currentUser.getId());
         statement.executeUpdate();
         return result;
     }
@@ -84,7 +83,7 @@ public class CookieRepositoryImpl implements CookieRepository {
         PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                 "UPDATE cookies SET value = ? WHERE cookies.user_id = ?");
         statement.setString(1, result);
-        statement.setLong(2, currentUser.getID());
+        statement.setLong(2, currentUser.getId());
         statement.executeUpdate();
         return result;
     }

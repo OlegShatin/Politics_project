@@ -6,7 +6,7 @@ import java.time.OffsetDateTime;
  * @author Oleg Shatin
  *         11-501
  */
-public class Message {
+public class Message implements Comparable{
     private Long id;
     private Long senderId;
     private Long recipientId;
@@ -45,5 +45,10 @@ public class Message {
         this.recipientId = recipientId;
         this.message_text = message_text;
         this.sendingTime = sendingTime;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return -this.getSendingTime().compareTo(((Message)o).getSendingTime());
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="17940883">
+  <component name="DataSourceManagerImpl" format="xml" hash="1354270279">
     <data-source source="LOCAL" name="PostgreSQL - politics_web_app@localhost" uuid="28f01051-dc4d-4ac4-8b7a-4e37ac1a85c3">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
