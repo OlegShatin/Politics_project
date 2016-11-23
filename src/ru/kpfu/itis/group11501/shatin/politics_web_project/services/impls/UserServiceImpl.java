@@ -13,6 +13,7 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.Me
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.UserRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 
+import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
                 messageText,
                 OffsetDateTime.now(sender.getTimezoneOffset())
         );
-        return messageRepository.addMessage(newMessage);
+        return messageRepository.addMessage(newMessage, sender);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
     public SortedMap<Message, Candidate> getPageOfConversationsWithCandidatesForUser(User user, int page) {
         SortedMap<Message, Candidate> conversations = new TreeMap<Message, Candidate>();
         try {
-            for (Map.Entry<Message, User> entry : messageRepository.getLastMessagesWithOffsetForUser(user, (page - 1) * 10).entrySet()) {
+            for (Map.Entry<Message, User> entry : messageRepository.getLastMessagesWithOffsetForUser(user, (page - 1) * 10, 10).entrySet()) {
                 if (entry.getValue() != null) {
                     Candidate candidate = candidateRepository.getCandidateForAgent(entry.getValue());
                     if (candidate != null) {
@@ -138,7 +139,8 @@ public class UserServiceImpl implements UserService {
     public SortedMap<Message, User> getPageOfConversationsWithUsersForUser(User user, int page) {
         SortedMap<Message, User> conversations = new TreeMap<Message, User>();
         try {
-            for (Map.Entry<Message, User> entry : messageRepository.getLastMessagesWithOffsetForUser(user, (page - 1) * 10).entrySet()) {
+            //// TODO: 23.11.2016 fix message time for user bug
+            for (Map.Entry<Message, User> entry : messageRepository.getLastMessagesWithOffsetForUser(user, (page - 1) * 10, 10).entrySet()) {
                 if (entry.getValue() != null) {
                     User voter = entry.getValue();
                     if (voter != null) {
@@ -150,5 +152,11 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return conversations;
+    }
+
+
+    @Override
+    public List<Message> getConversationWithUserForUser(User user, Long otherUserId) {
+        return messageRepository.getMessagesBetweenUsersSortedByTimeDescForUser(user, getUser(otherUserId));
     }
 }

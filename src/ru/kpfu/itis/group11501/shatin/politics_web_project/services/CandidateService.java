@@ -12,4 +12,6 @@ public interface CandidateService {
     Candidate getCandidateForAgent(User agent);
 
     Candidate getCandidateFromElectionById(Election election, Long candidateId);
+
+    Candidate getCandidateById(Long id);
 }

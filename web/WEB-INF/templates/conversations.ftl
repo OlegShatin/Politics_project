@@ -17,8 +17,13 @@
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-offset-2 col-md-8">
-        <h1 class="page-header"> Мои обращения к кандидатам
-        </h1>
+        <#if user_role.name() == 'USER'>
+            <h1 class="page-header"> Мои обращения к кандидатам
+            </h1>
+        <#else>
+            <h1 class="page-header"> Обращения пользователей
+            </h1>
+        </#if>
         <#if error?has_content>
             <div class="alert alert-danger" role="alert">
                 <strong>Oh snap!</strong> ${error}
@@ -31,7 +36,7 @@
 
 <div class="row">
     <div class="col-md-offset-2 col-md-8">
-        <#if unmessaged_candidates?? && user_role=="USER" || user_role=="ADMIN">
+        <#if unmessaged_candidates?has_content && user_role=="USER" || user_role=="ADMIN">
             <!-- Single button -->
             <div class="row">
                 <div class="col-xs-4">
@@ -45,7 +50,6 @@
                                 <li><a data-toggle="modal"
                                        data-target="#send_massage_to${candidate.getId()}">${candidate.getName()}</a>
                                 </li>
-
                             </#list>
                         </ul>
                     </div>
@@ -55,7 +59,7 @@
                 <div class="modal fade" id="send_massage_to${candidate.getId()}" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel">
                     <form method="post" class="form-horizontal"
-                          action="/candidates?candidate_id=${candidate.getId()}">
+                          action="/conversations?id=${candidate.getId()}">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
