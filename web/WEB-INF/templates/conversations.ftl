@@ -43,7 +43,7 @@
                     <div class="btn-group btn-block">
                         <button type="button" class="btn-block btn btn-default dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                            Написать другим кандидатам <span class="caret"></span>
+                            Написать кандидатам <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <#list unmessaged_candidates as candidate>

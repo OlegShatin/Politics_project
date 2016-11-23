@@ -39,7 +39,7 @@ public class CandidatesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         Election election = electionService.getNextElectionForUser(user);
-        if (election != null && user != null && user.getRole() == Role.USER && request.getParameter("candidate_id") != null) {
+        if (election != null && user != null && user.getRole() != Role.GUEST && request.getParameter("candidate_id") != null) {
             if (request.getParameter("message_text") != null) {
                 try {
                     Long candidateId = Long.parseLong(request.getParameter("candidate_id"));

@@ -79,7 +79,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             PreparedStatement statement
                     = ConnectionSingleton.getConnection()
                     .prepareStatement("SELECT candidates.*, parties.seats_in_parliament, candidates.party AS party_id FROM  candidates " +
-                    " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = candidate_id");
+                    " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = candidates.id");
             if (candidateId != null){
                 statement.setLong(1, candidateId);
                 ResultSet resultSet = statement.executeQuery();

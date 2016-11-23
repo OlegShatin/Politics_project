@@ -13,7 +13,6 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.Me
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.UserRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 
-import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(long userId) {
+    public User getUser(Long userId) {
         return userRepository.getUserById(userId);
     }
 

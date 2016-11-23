@@ -35,7 +35,7 @@ footer {
     vertical-align: middle;
     float: none;
 }
-.round_icon_small, .round_icon_big {
+.round_icon_small, .round_icon_big, .round_icon_extrasmall {
     -webkit-border-radius: 50% !important;
     -moz-border-radius: 50% !important;
     border-radius: 50% !important;
@@ -44,4 +44,8 @@ footer {
 .round_icon_small {
     width: 100px;
     height: 100px;
+}
+.round_icon_extrasmall{
+    width: 50px;
+    height: 50px;
 }

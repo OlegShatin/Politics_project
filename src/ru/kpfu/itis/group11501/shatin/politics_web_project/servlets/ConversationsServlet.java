@@ -44,15 +44,14 @@ public class ConversationsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Election election = electionService.getNextElectionForUser(user);
-        if (election != null && user != null && user.getRole() != Role.GUEST && request.getParameter("id") != null) {
+        if (user != null && user.getRole() != Role.GUEST && request.getParameter("id") != null) {
             if (request.getParameter("message_text") != null) {
                 if (user.getRole() == Role.USER) {
                     try {
                         Long candidateId = Long.parseLong(request.getParameter("id"));
                         Message newMessage = userService.addMessage(
                                 user,
-                                candidateService.getCandidateFromElectionById(election, candidateId).getAgentId(),
+                                candidateService.getCandidateById(candidateId).getAgentId(),
                                 request.getParameter("message_text")
                         );
                         if (newMessage != null) {
@@ -65,11 +64,24 @@ public class ConversationsServlet extends HttpServlet {
                     }
                     //if user agent or admin
                 } else {
-                    //// TODO: 23.11.2016 remove or approve this
-                    response.sendRedirect("/404");
+                    try {
+                        Long recepientUserId = Long.parseLong(request.getParameter("id"));
+                        Message newMessage = userService.addMessage(
+                                user,
+                                recepientUserId,
+                                request.getParameter("message_text")
+                        );
+                        if (newMessage != null) {
+                            response.sendRedirect("/conversations?id=" + request.getParameter("id"));
+                        } else
+                            response.sendRedirect("/conversations?error=message_was_not_sent");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        response.sendRedirect("/404");
+                    }
                 }
             } else {
-                response.sendRedirect("/candidates?error=empty_message");
+                response.sendRedirect("/conversations?error=empty_message");
             }
         } else
             response.sendRedirect("/404");
@@ -128,6 +140,7 @@ public class ConversationsServlet extends HttpServlet {
                 Helper.render(request, response, "conversations.ftl", root);
             } else {
                 //id - another user or candidate in conversation
+                System.out.println("get conv start");
                 Long selectedId = null;
                 try {
                     selectedId = Long.parseLong(request.getParameter("id"));
@@ -150,14 +163,19 @@ public class ConversationsServlet extends HttpServlet {
                     //if admin or agent: need user like opponent
                     User otherUser = userService.getUser(selectedId);
                     if (otherUser != null) {
+                        System.out.println("smth wrong?");
                         sortedResult = userService.getConversationWithUserForUser(user, otherUser.getId());
+                        if (sortedResult != null) {
+                            root.put("messages", sortedResult);
+                        } else
+                            response.sendRedirect("/404");
                         root.put("opponent", otherUser);
                     } else {
                         response.sendRedirect("/404");
                     }
                 }
 
-                if (sortedResult != null) {
+                if (sortedResult != null && root.get("opponent") != null) {
                     root.put("messages", sortedResult);
                 } else
                     response.sendRedirect("/404");
