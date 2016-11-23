@@ -14,4 +14,6 @@ public interface CandidateRepository {
     List<Candidate> getCandidatesForElection(Election election, boolean includeDefaultCandidates);
 
     Candidate getCandidateForAgent(User agent);
+
+    Candidate getCandidateById(Long candidateId);
 }

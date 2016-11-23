@@ -55,7 +55,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     public Candidate getCandidateForAgent(User agent) {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "SELECT candidates.*, parties.*, parties.id AS party_id FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
+                    "SELECT candidates.*, parties.seats_in_parliament, parties.id AS party_id FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
                             " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = agent_id");
             statement.setLong(1, agent.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -68,6 +68,33 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Candidate getCandidateById(Long candidateId) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("SELECT candidates.*, parties.seats_in_parliament, candidates.party AS party_id FROM  candidates " +
+                    " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = candidate_id");
+            if (candidateId != null){
+                statement.setLong(1, candidateId);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    resultSet.getLong("party_id");
+                    if (resultSet.wasNull()) {
+                        return createCandidatePresidentByResultSet(resultSet);
+                    } else {
+                        return createCandidatePartyByResultSet(resultSet);
+                    }
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;

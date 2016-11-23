@@ -40,4 +40,7 @@ public interface UserService {
     int getMaxPageOfListOfConversationsForUser(User user);
 
     SortedMap<Message,User> getPageOfConversationsWithUsersForUser(User user, int page);
+
+
+    List<Message> getConversationWithUserForUser(User user, Long otherUserId);
 }

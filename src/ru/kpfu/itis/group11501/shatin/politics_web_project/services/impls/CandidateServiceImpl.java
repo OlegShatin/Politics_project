@@ -30,4 +30,9 @@ public class CandidateServiceImpl implements ru.kpfu.itis.group11501.shatin.poli
         return null;
     }
 
+    @Override
+    public Candidate getCandidateById(Long id) {
+        return candidateRepository.getCandidateById(id);
+    }
+
 }
