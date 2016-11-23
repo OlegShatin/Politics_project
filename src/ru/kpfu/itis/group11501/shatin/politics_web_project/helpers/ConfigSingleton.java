@@ -1,6 +1,8 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.helpers;
 
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateExceptionHandler;
 
 import javax.servlet.ServletContext;
@@ -21,6 +23,10 @@ public class ConfigSingleton {
             cfg.setTemplateExceptionHandler(
                     TemplateExceptionHandler.HTML_DEBUG_HANDLER
             );
+            /*//// TODO: 23.11.2016 was added wrapper
+           BeansWrapper beansWrapper = (BeansWrapper) ObjectWrapper.BEANS_WRAPPER;
+            beansWrapper.setExposeFields(true);
+            cfg.setObjectWrapper(beansWrapper);;*/
         }
         return cfg;
     }

@@ -43,7 +43,7 @@
                     <a href="#">Мой профиль</a>
                 </li>
                 <li>
-                    <a href="#">Мои обращения</a>
+                    <a href="/conversations">Мои обращения</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

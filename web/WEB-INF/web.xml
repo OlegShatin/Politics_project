@@ -96,6 +96,15 @@
         <servlet-name>candidatesServlet</servlet-name>
         <url-pattern>/candidates</url-pattern>
     </servlet-mapping>
+    <!-- Conversations -->
+    <servlet>
+        <servlet-name>conversationsServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.ConversationsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>conversationsServlet</servlet-name>
+        <url-pattern>/conversations</url-pattern>
+    </servlet-mapping>
 
 
     <!-- Technical -->

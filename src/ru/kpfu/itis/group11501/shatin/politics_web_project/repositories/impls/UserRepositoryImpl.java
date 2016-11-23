@@ -123,16 +123,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private User createUserLikeResultSet(ResultSet resultSet) throws SQLException {
+        return createUserLikeResultSetWithCustomIdColumnName(resultSet, "id");
+
+    }
+
+    User createUserLikeResultSetWithCustomIdColumnName(ResultSet resultSet, String idColumnName) throws SQLException {
         return new User(resultSet.getString("password_hash"),
                 resultSet.getString("email"),
-                resultSet.getLong("id"),
+                resultSet.getLong(idColumnName),
                 Role.valueOf(resultSet.getString("role")),
                 ZoneOffset.ofHours(resultSet.getInt("timezone")),
                 LocalDate.of(resultSet.getDate("birthday").getYear(),resultSet.getDate("birthday").getMonth() + 1,resultSet.getDate("birthday").getDay()),
                 resultSet.getString("name"),
                 resultSet.getString("surname"),
                 resultSet.getString("patronymic"));
-
     }
 
 }

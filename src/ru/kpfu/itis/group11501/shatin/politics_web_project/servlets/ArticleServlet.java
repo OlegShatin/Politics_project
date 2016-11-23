@@ -41,7 +41,7 @@ public class ArticleServlet extends HttpServlet {
         User currentUser = (User)request.getSession().getAttribute("user");
         if (currentUser != null) {
             Comment newComment = new Comment(Long.parseLong(request.getParameter("parent_comment_id")),
-                    Long.parseLong(request.getParameter("a")), currentUser.getID(),
+                    Long.parseLong(request.getParameter("a")), currentUser.getId(),
                     request.getParameter("comment_text"),
                     OffsetDateTime.now(currentUser.getTimezoneOffset()));
             newComment = newsService.addComment(newComment);
