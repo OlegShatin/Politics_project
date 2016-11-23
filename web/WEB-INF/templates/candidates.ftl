@@ -35,7 +35,7 @@
         </#if>
         <#if success_message_candidate?has_content>
             <div class="alert alert-success" role="alert">
-                <strong>Ваше сообщение отправлено!</strong> <a href="conversations?id=${success_message_candidate.getId()}">перейти к диалогу</a>
+                <strong>Ваше сообщение отправлено!</strong><#if user_role.name()=='USER'> <a href="conversations?id=${success_message_candidate.getId()}">перейти к диалогу</a></#if>
             </div>
         </#if>
     </div>
@@ -76,7 +76,7 @@
                             <div class="col-xs-4">
                                 <img class="img-responsive" src="${candidate.getImageSrc()}"
                                      alt="">
-                                <a class="btn btn-primary btn-block" <#if user_role.name() == 'USER'> data-toggle="modal" data-target="#send_massage_to${candidate.getId()}"<#else> href="/login" </#if>> Написать обращение <span class="glyphicon glyphicon-pencil"
+                                <a class="btn btn-primary btn-block" <#if user_role.name() != 'GUEST'> data-toggle="modal" data-target="#send_massage_to${candidate.getId()}"<#else> href="/login" </#if>> Написать обращение <span class="glyphicon glyphicon-pencil"
                                                                                                                                                                                 aria-hidden="true"></span>
                                 </a>
                                 <div class="modal fade" id="send_massage_to${candidate.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
