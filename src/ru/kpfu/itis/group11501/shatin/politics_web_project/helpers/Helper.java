@@ -5,8 +5,8 @@ import freemarker.template.TemplateException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.Part;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -43,6 +43,25 @@ public class Helper {
             e.printStackTrace();
         }
         return null;
+    }
+    public static void uploadImage(Part filePart, String fileName) {
+        try {
+            File file = new File("B:/storage/politics_project/" + fileName + ".jpg");
+            file.createNewFile();
+            FileOutputStream out = new FileOutputStream(file);
+            InputStream filecontent = filePart.getInputStream();
+            int read = 0;
+            final byte[] bytes = new byte[1024];
+
+            while ((read = filecontent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.close();
+            filecontent.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

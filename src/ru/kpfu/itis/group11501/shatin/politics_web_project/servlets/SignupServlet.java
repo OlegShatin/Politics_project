@@ -31,41 +31,48 @@ public class SignupServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!request.getParameter("password").equals(request.getParameter("repeated_password"))) {
-            response.sendRedirect("/signup?error=passwords_dont_match");
+        if (request.getParameter("password") == null || request.getParameter("repeated_password") == null
+                || request.getParameter("birthday_date") == null || request.getParameter("email") == null
+                || request.getParameter("passport_series") == null || request.getParameter("passport_number") == null
+                || request.getParameter("name") == null || request.getParameter("surname") == null) {
+            //// TODO: 24.11.2016 write fine error messages
+            response.sendRedirect("/signup?error=data_error");
         } else {
-            if (userService.emailAlreadyExists(request.getParameter("email").toLowerCase())) {
-                response.sendRedirect("/signup?error=user_already_exists");
+            if (!request.getParameter("password").equals(request.getParameter("repeated_password"))) {
+                response.sendRedirect("/signup?error=passwords_dont_match");
             } else {
-                if (!userService.passportDataIsValid(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
-                    response.sendRedirect("/signup?error=invalid_passport_data");
+                if (userService.emailAlreadyExists(request.getParameter("email").toLowerCase())) {
+                    response.sendRedirect("/signup?error=user_already_exists");
                 } else {
-                    if (userService.samePassportExists(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
-                        response.sendRedirect("/signup?error=passport_already_exists");
+                    if (!userService.passportDataIsValid(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
+                        response.sendRedirect("/signup?error=invalid_passport_data");
                     } else {
-                        try {
-                            User currentNewUser = userService.createNewUser(
-                                    Helper.getHashedString(request.getParameter("password")),
-                                    request.getParameter("email").toLowerCase(),
-                                    Role.USER,
-                                    Integer.parseInt(request.getParameter("timezone_offset")),
-                                    request.getParameter("passport_series"),
-                                    request.getParameter("passport_num"),
-                                    request.getParameter("name"),
-                                    request.getParameter("surname"),
-                                    request.getParameter("patronymic"),
-                                    LocalDate.parse(request.getParameter("birthday_date")));
-                            request.getSession().setAttribute("user", currentNewUser);
-                            response.sendRedirect("/news");
-                        } catch (DateTimeParseException e) {
-                            response.sendRedirect("/signup?error=data_error");
+                        if (userService.samePassportExists(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
+                            response.sendRedirect("/signup?error=passport_already_exists");
+                        } else {
+                            try {
+                                User currentNewUser = userService.createNewUser(
+                                        Helper.getHashedString(request.getParameter("password")),
+                                        request.getParameter("email").toLowerCase(),
+                                        Role.USER,
+                                        Integer.parseInt(request.getParameter("timezone_offset")),
+                                        request.getParameter("passport_series"),
+                                        request.getParameter("passport_num"),
+                                        request.getParameter("name"),
+                                        request.getParameter("surname"),
+                                        request.getParameter("patronymic"),
+                                        LocalDate.parse(request.getParameter("birthday_date")));
+                                request.getSession().setAttribute("user", currentNewUser);
+                                response.sendRedirect("/news");
+                            } catch (DateTimeParseException e) {
+                                response.sendRedirect("/signup?error=data_error");
+                            }
                         }
                     }
                 }
             }
+
         }
-
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -22,4 +22,8 @@ public interface UserRepository {
     boolean addNewUser(String password, String email, Role role, int timezoneOffset, String passportSeries, String passportNum, String name, String surname, String patronymic, LocalDate birthdayDate);
 
     User getUserById(long userId);
+
+    boolean updateEmail(long userId, String email);
+
+    boolean updatePassword(long userId, String hashedPassword);
 }

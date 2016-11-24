@@ -100,6 +100,111 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return null;
     }
 
+    @Override
+    public boolean updateName(long id, String name) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET name = ? WHERE id = ?");
+            statement.setString(1, name);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateId(long id, long newId) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET id = ? WHERE id = ?");
+            statement.setLong(1, newId);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateInfo(long id, String info) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET info = ? WHERE id = ?");
+            statement.setString(1, info);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateAchievements(long id, String achievements) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET achievements = ? WHERE id = ?");
+            statement.setString(1, achievements);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateElectionProgram(long id, String program) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET election_program = ? WHERE id = ?");
+            statement.setString(1, program);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateImageSrc(long id, String src) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE candidates SET image_src = ? WHERE id = ?");
+            statement.setString(1, src);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateSeatsInParliament(long id, int seats) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE parties SET seats_in_parliament = ? WHERE id = (SELECT party FROM candidates WHERE id =?)");
+            statement.setInt(1, seats);
+            statement.setLong(2, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private Candidate createCandidatePresidentByResultSet(ResultSet resultSet) throws SQLException {
         return createCandidateByResultSet(resultSet, false);
     }

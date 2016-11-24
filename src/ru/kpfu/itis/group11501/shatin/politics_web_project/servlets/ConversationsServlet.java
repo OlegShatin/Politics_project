@@ -43,7 +43,7 @@ public class ConversationsServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = userService.authorize(request.getSession().getAttribute("user"));
         if (user != null && user.getRole() != Role.GUEST && request.getParameter("id") != null) {
             if (request.getParameter("message_text") != null) {
                 if (user.getRole() == Role.USER) {
@@ -88,10 +88,7 @@ public class ConversationsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-        User user = (User) request.getSession().getAttribute("user") != null ?
-                (User) request.getSession().getAttribute("user") : userService.getGuest();
+        User user = userService.authorize(request.getSession().getAttribute("user"));
         if (user != null && user.getRole() != Role.GUEST) {
             HashMap<String, Object> root = new HashMap<>();
             root.put("user_role", user.getRole());
@@ -140,7 +137,6 @@ public class ConversationsServlet extends HttpServlet {
                 Helper.render(request, response, "conversations.ftl", root);
             } else {
                 //id - another user or candidate in conversation
-                System.out.println("get conv start");
                 Long selectedId = null;
                 try {
                     selectedId = Long.parseLong(request.getParameter("id"));
@@ -163,7 +159,6 @@ public class ConversationsServlet extends HttpServlet {
                     //if admin or agent: need user like opponent
                     User otherUser = userService.getUser(selectedId);
                     if (otherUser != null) {
-                        System.out.println("smth wrong?");
                         sortedResult = userService.getConversationWithUserForUser(user, otherUser.getId());
                         if (sortedResult != null) {
                             root.put("messages", sortedResult);

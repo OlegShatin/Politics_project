@@ -40,7 +40,7 @@
                     <a href="#">Статистика</a>
                 </li>
                 <li>
-                    <a href="#">Мой профиль</a>
+                    <a href="/profile">Мой профиль</a>
                 </li>
                 <li>
                     <a href="/conversations">Мои обращения</a>

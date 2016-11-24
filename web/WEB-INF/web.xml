@@ -105,18 +105,36 @@
         <servlet-name>conversationsServlet</servlet-name>
         <url-pattern>/conversations</url-pattern>
     </servlet-mapping>
+    <!-- Conversations -->
+    <servlet>
+        <servlet-name>profileServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>profileServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
 
 
     <!-- Technical -->
+    <servlet>
+        <servlet-name>Files</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.FileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Files</servlet-name>
+        <url-pattern>/img/*</url-pattern>
+    </servlet-mapping>
+    <!--
     <servlet-mapping>
         <servlet-name>default</servlet-name>
-        <url-pattern>*.css</url-pattern>
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>
+        <url-pattern>*.css</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
