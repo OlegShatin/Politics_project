@@ -5,7 +5,9 @@ import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Role;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionService;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.UserService;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.ElectionServiceImpl;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,11 +24,13 @@ import java.util.HashMap;
 @WebServlet(name = "BallotServlet")
 public class BallotServlet extends HttpServlet {
     private ElectionService electionService;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         electionService = new ElectionServiceImpl();
+        userService = new UserServiceImpl();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,7 +55,7 @@ public class BallotServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = userService.authorize(request.getSession().getAttribute("user"));
         Election election = electionService.getCurrentElectionForUser(user);
         if (user.getRole() == Role.USER && !electionService.userVotedOnElection(user, election)) {
 

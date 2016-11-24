@@ -16,4 +16,18 @@ public interface CandidateRepository {
     Candidate getCandidateForAgent(User agent);
 
     Candidate getCandidateById(Long candidateId);
+
+    boolean updateName(long id, String name);
+
+    boolean updateId(long id, long newId);
+
+    boolean updateInfo(long id, String info);
+
+    boolean updateAchievements(long id, String achievements);
+
+    boolean updateElectionProgram(long id, String program);
+
+    boolean updateImageSrc(long id, String src);
+
+    boolean updateSeatsInParliament(long id, int seats);
 }

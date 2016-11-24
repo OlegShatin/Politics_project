@@ -17,6 +17,7 @@ public interface UserService {
     boolean userExists(String email, String hashed_password);
 
     User getUser(String email);
+    User authorize(Object sessionUserParam);
 
 
     boolean emailAlreadyExists(String email);
@@ -43,4 +44,8 @@ public interface UserService {
 
 
     List<Message> getConversationWithUserForUser(User user, Long otherUserId);
+
+    boolean updateEmail(long userId, String email);
+
+    boolean updatePassword(long userId, String hashedString);
 }

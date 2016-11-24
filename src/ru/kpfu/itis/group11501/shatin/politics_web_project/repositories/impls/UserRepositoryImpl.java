@@ -122,6 +122,36 @@ public class UserRepositoryImpl implements UserRepository {
         return result;
     }
 
+    @Override
+    public boolean updateEmail(long userId, String email) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE users SET email = ? WHERE id = ?");
+            statement.setString(1, email.toLowerCase());
+            statement.setLong(2, userId);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePassword(long userId, String hashedPassword) {
+        try {
+            PreparedStatement statement
+                    = ConnectionSingleton.getConnection()
+                    .prepareStatement("UPDATE users SET password_hash = ? WHERE id = ?");
+            statement.setString(1, hashedPassword);
+            statement.setLong(2, userId);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private User createUserLikeResultSet(ResultSet resultSet) throws SQLException {
         return createUserLikeResultSetWithCustomIdColumnName(resultSet, "id");
 

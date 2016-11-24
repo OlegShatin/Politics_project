@@ -14,4 +14,11 @@ public interface CandidateService {
     Candidate getCandidateFromElectionById(Election election, Long candidateId);
 
     Candidate getCandidateById(Long id);
+    boolean updateName(long id, String name);
+    boolean updateId(long id, String newId);
+    boolean updateInfo(long id, String info);
+    boolean updateAchievements(long id, String achievements);
+    boolean updateElection_program(long id, String program);
+    boolean updateImage_src(long id, String src);
+    boolean updateSeats_in_parliament(long id, String seats);
 }

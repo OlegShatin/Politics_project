@@ -49,6 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User authorize(Object sessionUserParam) {
+        return sessionUserParam != null ?
+                (User)sessionUserParam : getGuest();
+    }
+
+    @Override
     public boolean emailAlreadyExists(String email) {
         return userRepository.containsThisEmail(email);
     }
@@ -124,7 +130,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public int getMaxPageOfListOfConversationsForUser(User user) {
         int result = messageRepository.getCountOfRowsFromLastMessagesTableForUser(user);
-        System.out.println(result);
         if (result % 10 != 0)
             result = result / 10 + 1;
         else
@@ -138,7 +143,7 @@ public class UserServiceImpl implements UserService {
     public SortedMap<Message, User> getPageOfConversationsWithUsersForUser(User user, int page) {
         SortedMap<Message, User> conversations = new TreeMap<Message, User>();
         try {
-            //// TODO: 23.11.2016 fix message time for user bug
+
             for (Map.Entry<Message, User> entry : messageRepository.getLastMessagesWithOffsetForUser(user, (page - 1) * 10, 10).entrySet()) {
                 if (entry.getValue() != null) {
                     User voter = entry.getValue();
@@ -157,5 +162,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Message> getConversationWithUserForUser(User user, Long otherUserId) {
         return messageRepository.getMessagesBetweenUsersSortedByTimeDescForUser(user, getUser(otherUserId));
+    }
+
+    @Override
+    public boolean updateEmail(long userId, String email) {
+        return userRepository.updateEmail(userId, email);
+    }
+
+    @Override
+    public boolean updatePassword(long userId, String hashedString) {
+        return userRepository.updatePassword(userId, hashedString);
     }
 }

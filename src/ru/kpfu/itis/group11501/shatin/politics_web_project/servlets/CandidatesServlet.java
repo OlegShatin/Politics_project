@@ -37,7 +37,7 @@ public class CandidatesServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = userService.authorize(request.getSession().getAttribute("user"));
         Election election = electionService.getNextElectionForUser(user);
         if (election != null && user != null && user.getRole() != Role.GUEST && request.getParameter("candidate_id") != null) {
             if (request.getParameter("message_text") != null) {
@@ -64,8 +64,7 @@ public class CandidatesServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user") != null ?
-                (User) request.getSession().getAttribute("user") : userService.getGuest();
+        User user = userService.authorize(request.getSession().getAttribute("user"));
         HashMap<String, Object> root = new HashMap<>();
         root.put("user_role", user.getRole());
         root.put("error", request.getParameter("error"));
