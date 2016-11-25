@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             statement = ConnectionSingleton.getConnection().prepareStatement(
                     "select * FROM users WHERE users.email LIKE ?");
-            statement.setString(1, "%" + email.toLowerCase() + "%");
+            statement.setString(1, email.toLowerCase());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 result = createUserLikeResultSet(resultSet);
@@ -41,8 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "select * FROM users WHERE users.email LIKE ? AND users.password_hash LIKE ?");
-            statement.setString(1, "%" + email.toLowerCase() + "%");
-            statement.setString(2, "%" + hashed_password + "%");
+            statement.setString(1,  email.toLowerCase());
+            statement.setString(2, hashed_password);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         } catch (SQLException e){
@@ -56,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "select * FROM users WHERE users.email LIKE ?");
-            statement.setString(1, "%" + email.toLowerCase() + "%");
+            statement.setString(1, email.toLowerCase());
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         } catch (SQLException e){
@@ -70,8 +70,8 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
                     "select * FROM users WHERE users.passport_series LIKE ? AND users.passport_number LIKE ?");
-            statement.setString(1, "%" + passportSeries + "%");
-            statement.setString(2, "%" + passportNum + "%");
+            statement.setString(1, passportSeries);
+            statement.setString(2, passportNum);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         } catch (SQLException e){

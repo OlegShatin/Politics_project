@@ -95,13 +95,13 @@
         </div>
         <div class="row">
             <form role="form" class="form-horizontal" action="/profile" method="POST"
-                  onsubmit="return checkField('email')">
+                  onsubmit="return checkField('email') && checkEmail()">
                 <div class="form-group">
                     <label for="email" class="col-xs-3 control-label">Email</label>
 
                     <div class="col-xs-6">
                         <input type="email" class="form-control" name="email"
-                               id="email" maxlength="50" oninput="removeHasError('email')"
+                               id="email" maxlength="50" oninput="checkEmail()"
                                placeholder="${user.getEmail()}"/>
                     </div>
                 </div>
@@ -143,5 +143,6 @@
 </#macro>
 <#macro scripts>
 <script src="js/checkField.js"></script>
+<script src="js/ajax-email-checker.js"></script>
 </#macro>
 <#include "base.ftl">

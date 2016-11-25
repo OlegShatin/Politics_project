@@ -19,14 +19,19 @@
 </div>
 <div class="row">
     <div class="col-md-offset-5 col-md-2" align="center">
-        <#if error?has_content><p>Неправильный Email или пароль</p></#if>
+        <#if error?has_content>
+            <div class="alert alert-danger" role="alert">
+                <strong>Неправильный Email или пароль</strong>
+            </div>
+
+        </#if>
             <form role="form" action="/login" method="POST">
             <div class="form-group">
-                <input type="email" class="form-control" name="email"
+                <input placeholder="Email" type="email" class="form-control" name="email"
                        <#if last_email?has_content>value="${last_email}"</#if>/>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" name="password"/>
+                <input type="password" placeholder="Password" class="form-control" name="password"/>
             </div>
             <div class="checkbox">
                 <label><input type="checkbox" name="remember_request">Запомнить меня</label>

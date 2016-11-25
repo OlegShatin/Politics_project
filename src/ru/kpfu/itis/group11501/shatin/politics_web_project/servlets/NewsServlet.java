@@ -69,6 +69,7 @@ public class NewsServlet extends HttpServlet {
         HashMap<String, Object> root = new HashMap<>();
         root.put("user_role", user.getRole());
         root.put("error", request.getParameter("error"));
+        root.put("alert", request.getParameter("alert"));
         //// TODO: 10.11.2016 add clocks info
         //if required all news send news list, if required article - send article
         if (request.getParameter("a") == null) {

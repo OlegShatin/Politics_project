@@ -24,6 +24,11 @@
                 <strong>Oh snap!</strong> ${error}
             </div>
         </#if>
+        <#if alert?has_content && alert = "thanks">
+            <div class="alert alert-success" role="alert">
+                <strong>Спасибо!</strong> Ваш голос учтен.
+            </div>
+        </#if>
         <a class="btn btn-block btn-success <#if user_cannot_vote>disabled</#if>"
            href="/ballot" role=button">Проголосовать</a>
         <#if user_role.name() == "GUEST">

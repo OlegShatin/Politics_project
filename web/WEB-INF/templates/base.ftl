@@ -37,7 +37,7 @@
                     <a href="/candidates">Кандидаты</a>
                 </li>
                 <li>
-                    <a href="#">Статистика</a>
+                    <a href="/results">Статистика</a>
                 </li>
                 <li>
                     <a href="/profile">Мой профиль</a>
@@ -60,7 +60,7 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; Timothy Utkin</p>
+
             </div>
         </div>
         <!-- /.row -->

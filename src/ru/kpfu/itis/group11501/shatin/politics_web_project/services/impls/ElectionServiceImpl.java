@@ -1,12 +1,14 @@
 package ru.kpfu.itis.group11501.shatin.politics_web_project.services.impls;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
-import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.*;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.CandidateRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.CandidateRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.ElectionRepository;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.repositories.impls.ElectionRepositoryImpl;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.services.ElectionService;
+
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * @author Oleg Shatin
@@ -62,6 +64,38 @@ public class ElectionServiceImpl implements ElectionService {
             result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result, false));
         }
         return result;
+    }
+
+    @Override
+    public List<Election> getFinishedParliamentRawElections() {
+        return electionRepository.getParliamentRawElectionsBefore(OffsetDateTime.now().minusHours(14));
+    }
+
+    @Override
+    public List<Election> getFinishedPresidentRawElections() {
+        return electionRepository.getPresidentRawElectionsBefore(OffsetDateTime.now().minusHours(14));
+    }
+
+    @Override
+    public List<Election> getFinishedAllRawElections() {
+        return electionRepository.getAllRawElectionsBefore(OffsetDateTime.now().minusHours(14));
+    }
+
+    @Override
+    public ElectionResult getElectionResultFromFinished(Long electionId) {
+        if (electionId != null) {
+            List<Election> elections = getFinishedAllRawElections();
+            if (elections != null) {
+                for (Election election : elections) {
+                    if (election.getId().equals(electionId)) {
+                        List<ResultItem> resultItems = candidateRepository.getResultItemsForElection(election, false);
+                        int totalBallots = electionRepository.getTotalBallotsForElection(election);
+                        return new ElectionResult(election, totalBallots, resultItems);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 
