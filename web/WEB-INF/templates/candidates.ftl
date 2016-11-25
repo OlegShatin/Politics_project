@@ -80,7 +80,7 @@
                                                                                                                                                                                 aria-hidden="true"></span>
                                 </a>
                                 <div class="modal fade" id="send_massage_to${candidate.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <form method="post" class="form-horizontal"
+                                    <form method="post" class="form-horizontal" onsubmit="return checkMessage()"
                                           action="/candidates?candidate_id=${candidate.getId()}">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -92,7 +92,7 @@
                                                     <div class="form-group">
                                                         <div class="row">
                                                             <div class="col-xs-offset-2 col-xs-8">
-                                                                <textarea class="form-control" rows="3" name="message_text"
+                                                                <textarea class="form-control" rows="3" onkeyup="removeHasError('message_text')" name="message_text"
                                                                           placeholder="Ваше обращение к кандидату"></textarea>
                                                             </div>
                                                         </div>
@@ -139,6 +139,6 @@
 
 <#macro scripts>
 <script src="js/jquery.js"></script>
-<script src="js/ajax-rating-comment.js"></script>
+<script src="/js/checkMessage.js"></script>
 </#macro>
 <#include "base.ftl">

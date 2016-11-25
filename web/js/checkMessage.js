@@ -3,7 +3,7 @@
  */
 function checkMessage() {
     var textfield = $("#message_text");
-    if (textfield.val() === '') {
+    if ($.trim(textfield.val()) === '') {
         //add notification about empty text
         textfield.parent().addClass("has-error");
         return false;

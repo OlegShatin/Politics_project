@@ -59,7 +59,7 @@
                 <div class="modal fade" id="send_massage_to${candidate.getId()}" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel">
                     <form method="post" class="form-horizontal"
-                          action="/conversations?id=${candidate.getId()}">
+                          action="/conversations?id=${candidate.getId()}" onsubmit="return checkMessage()">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -71,7 +71,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-offset-2 col-xs-8">
-                                                                <textarea class="form-control" rows="3"
+                                                                <textarea class="form-control" rows="3" onkeyup="removeHasError('message_text')"
                                                                           name="message_text"
                                                                           placeholder="Ваше обращение к кандидату"></textarea>
                                             </div>
@@ -155,5 +155,7 @@
 
 <hr>
 </#macro>
-<#macro scripts></#macro>
+<#macro scripts>
+    <script src="/js/checkMessage.js"></script>
+</#macro>
 <#include "base.ftl">

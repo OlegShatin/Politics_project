@@ -29,8 +29,9 @@
 <!-- /.row -->
 
 
-<form method="post" onsubmit="return checkField('name') && checkField('surname') &&
-    checkField('password') && checkField('repeated_password') && checkField('birthday_date')
+<form method="post" onsubmit="return isValidDate('birthday_date')
+     && checkField('name') && checkField('surname') &&
+    checkField('password') && checkField('repeated_password') && checkDate('birthday_date')
      && checkField('passport_series') && checkMinLegth('passport_series',4) && checkField('passport_num') &&checkField('email')  && checkMinLegth('passport_num',6) && checker() && checkEmail()">
     <div class="row">
         <div class="col-md-4 col-md-offset-2">
