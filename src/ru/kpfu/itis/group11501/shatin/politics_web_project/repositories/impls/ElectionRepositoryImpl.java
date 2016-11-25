@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Oleg Shatin
@@ -33,6 +34,75 @@ public class ElectionRepositoryImpl implements ElectionRepository {
     @Override
     public Election getNextRawElectionForUser(User user) {
         return getElection(user, false);
+    }
+
+    @Override
+    public List<Election> getParliamentRawElectionsBefore(OffsetDateTime moment) {
+        return getElectionsBefore(false,true,moment);
+    }
+
+    @Override
+    public List<Election> getPresidentRawElectionsBefore(OffsetDateTime moment) {
+        return getElectionsBefore(true,false,moment);
+    }
+
+    private List<Election> getElectionsBefore(boolean notIncludeParliament, boolean notIncludePresident, OffsetDateTime moment) {
+        List<Election> result = new ArrayList<>();
+        try {
+            String query="SELECT * FROM elections ";
+            String toInsert = "";
+            if (notIncludeParliament || notIncludePresident || moment != null){
+                toInsert = "WHERE ";
+                if (notIncludeParliament){
+                    toInsert += "(NOT elections.type = 'PARLIAMENT')";
+                }
+                if (notIncludeParliament && notIncludePresident){
+                    toInsert +=" AND ";
+                }
+                if (notIncludePresident){
+                    toInsert += "(NOT elections.type = 'PRESIDENT') ";
+                }
+                if ((notIncludeParliament || notIncludePresident) && moment != null){
+                    toInsert+=" AND ";
+                }
+                if (moment != null){
+                    toInsert +="(? > finish_time) ";
+                }
+            }
+            query += toInsert + " ORDER BY finish_time";
+            PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(query);
+            if (moment != null) {
+                statement.setTimestamp(1, new Timestamp(moment.toInstant().toEpochMilli()));
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                result.add(createElectionByResultSetForUser(resultSet, null));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Election> getAllRawElectionsBefore(OffsetDateTime moment) {
+        return getElectionsBefore(false,false,moment);
+    }
+
+    @Override
+    public int getTotalBallotsForElection(Election election) {
+        try {
+            PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
+                    "SELECT count(*) FROM votes WHERE ? = election_id");
+            statement.setLong(1,election.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     private Election getElection(User user, boolean requiredCurrentElection) {
@@ -117,10 +187,10 @@ public class ElectionRepositoryImpl implements ElectionRepository {
                 ElectionType.valueOf(resultSet.getString("type")),
                 OffsetDateTime.ofInstant(resultSet.getTimestamp("start_time").toInstant(),
                         ZoneOffset.ofHours(3))
-                        .withOffsetSameLocal(user.getTimezoneOffset()),
+                        .withOffsetSameLocal(user == null ? ZoneOffset.UTC : user.getTimezoneOffset()),
                 OffsetDateTime.ofInstant(resultSet.getTimestamp("finish_time").toInstant(),
                         ZoneOffset.ofHours(3))
-                        .withOffsetSameLocal(user.getTimezoneOffset()), new ArrayList<Candidate>());
+                        .withOffsetSameLocal(user == null ? ZoneOffset.UTC : user.getTimezoneOffset()), new ArrayList<Candidate>());
 
     }
 }

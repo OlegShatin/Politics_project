@@ -37,6 +37,14 @@
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ajaxEmailServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.EmailCheckAjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxEmailServlet</servlet-name>
+        <url-pattern>/ajax-email-check</url-pattern>
+    </servlet-mapping>
     
     <!--Sign up-->
     <servlet>
@@ -113,6 +121,15 @@
     <servlet-mapping>
         <servlet-name>profileServlet</servlet-name>
         <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <!-- Statistic -->
+    <servlet>
+        <servlet-name>statisticServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.StatisticServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>statisticServlet</servlet-name>
+        <url-pattern>/results</url-pattern>
     </servlet-mapping>
 
 

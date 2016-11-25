@@ -2,7 +2,11 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.ResultItem;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * @author Oleg Shatin
@@ -18,4 +22,12 @@ public interface ElectionRepository {
     void addVotedUser(Election election, User user);
 
     Election getNextRawElectionForUser(User user);
+
+    List<Election> getParliamentRawElectionsBefore(OffsetDateTime moment);
+
+    List<Election> getPresidentRawElectionsBefore(OffsetDateTime moment);
+
+    List<Election> getAllRawElectionsBefore(OffsetDateTime moment);
+
+    int getTotalBallotsForElection(Election election);
 }

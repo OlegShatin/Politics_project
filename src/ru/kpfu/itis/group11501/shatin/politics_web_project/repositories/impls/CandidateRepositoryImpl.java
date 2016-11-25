@@ -205,6 +205,40 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return false;
     }
 
+    @Override
+    public List<ResultItem> getResultItemsForElection(Election election, boolean includeDefaultCandidates) {
+        if (election != null){
+            List<ResultItem> result = new ArrayList<>();
+            try {
+                String toInsert = includeDefaultCandidates ? "" : " AND NOT (candidates.id = 1 OR candidates.id = 2)";
+                if (election.getType() == ElectionType.PARLIAMENT) {
+                    PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
+                            "SELECT candidates.*, parties.*, parties.id AS party_id, candidates_lists.votes FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id)" +
+                                    " JOIN parties ON (candidates.party = parties.id)WHERE ? = election_id" + toInsert);
+                    statement.setLong(1, election.getId());
+                    ResultSet resultSet = statement.executeQuery();
+                    while (resultSet.next()) {
+                        result.add(new ResultItem(createCandidatePartyByResultSet(resultSet),resultSet.getInt("votes")));
+                    }
+                } else {
+                    if (election.getType() == ElectionType.PRESIDENT) {
+                        PreparedStatement statement = ConnectionSingleton.getConnection().prepareStatement(
+                                "SELECT candidates.*, candidates_lists.votes FROM candidates_lists JOIN candidates ON (candidates_lists.candidate_id = candidates.id) WHERE ? = election_id" + toInsert);
+                        statement.setLong(1, election.getId());
+                        ResultSet resultSet = statement.executeQuery();
+                        while (resultSet.next()) {
+                            result.add(new ResultItem(createCandidatePresidentByResultSet(resultSet),resultSet.getInt("votes")));
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+        return null;
+    }
+
     private Candidate createCandidatePresidentByResultSet(ResultSet resultSet) throws SQLException {
         return createCandidateByResultSet(resultSet, false);
     }

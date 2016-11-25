@@ -171,8 +171,7 @@
                     <div class="col-xs-6">
                         <input type="file" class="form-control image" name="new_image"
                                id="image_src" maxlength="63"
-                               oninput="removeHasError('image_src')"
-                               placeholder="${candidate.getParty().getSeatsInParliament()}" max="450"/>
+                               oninput="removeHasError('image_src')"/>
                     </div>
                 </div>
                 <div class="form-group">

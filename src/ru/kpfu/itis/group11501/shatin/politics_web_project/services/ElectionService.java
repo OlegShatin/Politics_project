@@ -2,7 +2,10 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.services;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.ElectionResult;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
+
+import java.util.List;
 
 /**
  * @author Oleg Shatin
@@ -17,4 +20,11 @@ public interface ElectionService {
 
     Election getNextElectionForUser(User user);
 
+    List<Election> getFinishedParliamentRawElections();
+
+    List<Election> getFinishedPresidentRawElections();
+
+    List<Election> getFinishedAllRawElections();
+
+    ElectionResult getElectionResultFromFinished(Long electionId);
 }

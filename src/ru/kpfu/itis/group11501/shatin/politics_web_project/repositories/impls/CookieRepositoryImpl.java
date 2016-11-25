@@ -100,7 +100,7 @@ public class CookieRepositoryImpl implements CookieRepository {
 
 
     private boolean containsValue(String value, PreparedStatement statement) throws SQLException {
-        statement.setString(1,"%" + value +"%");
+        statement.setString(1, value);
         ResultSet resultSet = statement.executeQuery();
         return (resultSet.next());
     }

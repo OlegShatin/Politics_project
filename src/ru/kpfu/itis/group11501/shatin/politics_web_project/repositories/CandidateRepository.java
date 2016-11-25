@@ -2,6 +2,7 @@ package ru.kpfu.itis.group11501.shatin.politics_web_project.repositories;
 
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Candidate;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.Election;
+import ru.kpfu.itis.group11501.shatin.politics_web_project.models.ResultItem;
 import ru.kpfu.itis.group11501.shatin.politics_web_project.models.User;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface CandidateRepository {
     boolean updateImageSrc(long id, String src);
 
     boolean updateSeatsInParliament(long id, int seats);
+
+    List<ResultItem> getResultItemsForElection(Election election, boolean includeDefaultCandidates);
 }
