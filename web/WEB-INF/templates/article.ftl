@@ -49,11 +49,11 @@
                  role="tabpanel"
                  aria-labelledby="heading_main">
                 <div class="panel-body">
-                    <form method="post"
+                    <form method="post" onsubmit="return checkField('comment_text${article.getId()}')"
                           action="/news?a=${article.getId()}">
                         <div class="form-group">
                                 <textarea class="form-control" rows="3" name="comment_text"
-                                          placeholder="Ваш комментарий"></textarea>
+                                          placeholder="Ваш комментарий" id="comment_text${article.getId()}" onkeyup="removeHasError('comment_text${article.getId()}')"></textarea>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Комментировать</button>
@@ -110,11 +110,11 @@
                      role="tabpanel"
                      aria-labelledby="heading_${comment.getComment().getId()}">
                     <div class="panel-body">
-                        <form method="post"
+                        <form method="post" onsubmit="return checkField('comment_text${article.getId()}${comment.getComment().getId()}')"
                               action="/news?a=${article.getId()}&parent_comment_id=${comment.getComment().getId()}">
                             <div class="form-group">
                                 <textarea class="form-control" rows="3" name="comment_text"
-                                          placeholder="Ваш комментарий"></textarea>
+                                          placeholder="Ваш комментарий" id="comment_text${article.getId()}${comment.getComment().getId()}" onkeyup="removeHasError('comment_text${article.getId()}${comment.getComment().getId()}')"></textarea>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Ответить</button>
@@ -181,11 +181,11 @@
                      role="tabpanel"
                      aria-labelledby="heading_${comm.getComment().getId()}">
                     <div class="panel-body">
-                        <form method="post"
+                        <form method="post" onsubmit="return checkField('comment_text${article.getId()}${comm.getComment().getId()}')"
                               action="/news?a=${article.getId()}&parent_comment_id=${comm.getComment().getId()}">
                             <div class="form-group">
-                                <textarea class="form-control" rows="3" name="comment_text"
-                                          placeholder="Ваш комментарий"></textarea>
+                                <textarea class="form-control" rows="3" name="comment_text" id="comment_text${article.getId()}${comm.getComment().getId()}"
+                                          placeholder="Ваш комментарий" onkeyup="removeHasError('comment_text${article.getId()}${comm.getComment().getId()}')"></textarea>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Ответить</button>
@@ -207,5 +207,6 @@
 <#macro scripts>
 <script src="js/jquery.js"></script>
 <script src="js/ajax-rating-comment.js"></script>
+<script src="/js/checkField.js"></script>
 </#macro>
 <#include "base.ftl">

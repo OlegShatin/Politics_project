@@ -67,7 +67,11 @@ public class SignupServlet extends HttpServlet {
                                             request.getParameter("surname"),
                                             request.getParameter("patronymic"),
                                             LocalDate.parse(request.getParameter("birthday_date")));
-                                    response.sendRedirect("/login");
+                                    if (currentNewUser != null){
+                                        response.sendRedirect("/login");
+                                    } else {
+                                        response.sendRedirect("/signup?error=data_error");
+                                    }
                                 } catch (DateTimeParseException e) {
                                     response.sendRedirect("/signup?error=data_error");
                                 }

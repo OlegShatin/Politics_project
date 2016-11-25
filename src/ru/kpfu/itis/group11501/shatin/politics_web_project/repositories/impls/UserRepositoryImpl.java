@@ -10,6 +10,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
@@ -96,12 +99,11 @@ public class UserRepositoryImpl implements UserRepository {
             statement.setString(8, surname);
             statement.setString(9, patronymic);
             statement.setDate(10, Date.valueOf(birthdayDate.toString()));
-            statement.executeUpdate();
-            return true;
+            return 0 < statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     @Override
