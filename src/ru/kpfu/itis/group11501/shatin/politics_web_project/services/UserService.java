@@ -48,4 +48,6 @@ public interface UserService {
     boolean updateEmail(long userId, String email);
 
     boolean updatePassword(long userId, String hashedString);
+
+    boolean emailIsValid(String email);
 }

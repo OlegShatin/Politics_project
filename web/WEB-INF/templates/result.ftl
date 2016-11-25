@@ -69,6 +69,10 @@
                                         <label>Предвыборная программа</label>
 
                                         <p>${item.getCandidate().getElectionProgram()}</p>
+                                        <#if item.getCandidate().getParty()??>
+                                            <label>Текущее количество мест в Государственной Думе: ${item.getCandidate().getParty().getSeatsInParliament()}</label>
+
+                                        </#if>
                                     </div>
                                 </div>
                             </div>

@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +24,10 @@ public class NewsRepositoryImpl implements NewsRepository {
         Article result = null;
         try {
             statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "select * FROM news WHERE news.id = ?");
+                    "SELECT * FROM news WHERE news.id = ?");
             statement.setLong(1, articleID);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 result = createArticleByResultSetForUser(resultSet, user);
             }
         } catch (SQLException e) {
@@ -38,15 +37,28 @@ public class NewsRepositoryImpl implements NewsRepository {
     }
 
     @Override
-    public List<Article> getArticlesForUser(User user) {
+    public List<Article> getArticlesForUser(User user, String search, boolean headlinesOnly) {
         PreparedStatement statement = null;
         List<Article> result = null;
         try {
-            statement = ConnectionSingleton.getConnection().prepareStatement(
-                    "select * FROM news ORDER BY news.datetime DESC ");
+            if (search == null) {
+                statement = ConnectionSingleton.getConnection().prepareStatement(
+                        "SELECT * FROM news ORDER BY news.datetime DESC ");
+            } else {
+                if (headlinesOnly) {
+                    statement = ConnectionSingleton.getConnection().prepareStatement(
+                            "SELECT * FROM news WHERE news.headline LIKE ? ORDER BY news.datetime DESC ");
+                    statement.setString(1, "%" + search + "%");
+                } else {
+                    statement = ConnectionSingleton.getConnection().prepareStatement(
+                            "SELECT * FROM news WHERE news.headline LIKE ? OR news.content LIKE ? ORDER BY news.datetime DESC ");
+                    statement.setString(1, "%" + search + "%");
+                    statement.setString(2, "%" + search + "%");
+                }
+            }
             ResultSet resultSet = statement.executeQuery();
             result = new ArrayList<>();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 result.add(createArticleByResultSetForUser(resultSet, user));
             }
         } catch (SQLException e) {
@@ -54,10 +66,11 @@ public class NewsRepositoryImpl implements NewsRepository {
         }
         return result;
     }
+
     private Article createArticleByResultSetForUser(ResultSet resultSet, User user) throws SQLException {
         return new Article(resultSet.getLong("id"), resultSet.getString("headline"),
                 resultSet.getString("content"),
-                OffsetDateTime.ofInstant(resultSet.getTimestamp("datetime").toInstant(), ZoneOffset.ofHours(resultSet.getTimestamp("datetime").getTimezoneOffset()/60))
+                OffsetDateTime.ofInstant(resultSet.getTimestamp("datetime").toInstant(), ZoneOffset.ofHours(resultSet.getTimestamp("datetime").getTimezoneOffset() / 60))
                         .withOffsetSameInstant(user.getTimezoneOffset()));
     }
 }

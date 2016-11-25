@@ -35,16 +35,19 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        if (usersService.userExists(email, password)) {
-            User currentUser = usersService.getUser(email);
-            request.getSession().setAttribute("user", currentUser);
-            if (request.getParameter("remember_request") != null) {
-                cookieMaster.addRememberCookie(currentUser, response);
+        if (usersService.emailIsValid(email)) {
+            if (usersService.userExists(email, password)) {
+                User currentUser = usersService.getUser(email);
+                request.getSession().setAttribute("user", currentUser);
+                if (request.getParameter("remember_request") != null) {
+                    cookieMaster.addRememberCookie(currentUser, response);
+                }
+                response.sendRedirect("/news");
+            } else {
+                response.sendRedirect("/login?error=UserDoesNotExist");
             }
-            response.sendRedirect("/news");
-        } else {
-            response.sendRedirect("/login?error=UserDoesNotExist");
-        }
+        } else
+            response.sendRedirect("/login?error=InvalidEmail");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

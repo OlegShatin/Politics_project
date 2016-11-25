@@ -29,6 +29,10 @@
                 <strong>Спасибо!</strong> Ваш голос учтен.
             </div>
         </#if>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-2 col-md-3">
         <a class="btn btn-block btn-success <#if user_cannot_vote>disabled</#if>"
            href="/ballot" role=button">Проголосовать</a>
         <#if user_role.name() == "GUEST">
@@ -39,7 +43,26 @@
             </div>
         </#if>
     </div>
+    <!--search-->
+    <form method="get" action="/news" onsubmit="return checkField('search')">
+        <div class="col-md-3">
+            <div class="input-group stylish-input-group">
+                <input type="text" <#if search?has_content>value="${search}"</#if> id="search" name="search" class="form-control" placeholder="Поиск по новостям" oninput="removeHasError('search')">
+                    <span class="input-group-addon">
+                        <button type="submit"><span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="checkbox">
+                <label><input type="checkbox" name="headlines_only"><small>Только в заголовках</small></label>
+            </div>
+        </div>
+    </form>
 </div>
+
+
 <!-- /.row -->
 
     <#list articles as article>
@@ -76,5 +99,7 @@
     </#list>
 <hr>
 </#macro>
-<#macro scripts></#macro>
+<#macro scripts>
+<script src="/js/checkField.js"></script>
+</#macro>
 <#include "base.ftl">

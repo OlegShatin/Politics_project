@@ -36,29 +36,31 @@ public class NewsServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User currentUser = (User)request.getSession().getAttribute("user");
-        if (currentUser != null && (currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.USER)) {
+        User user = userService.authorize(request.getSession().getAttribute("user"));
+        if (user != null && (user.getRole() == Role.ADMIN || user.getRole() == Role.USER)) {
             Long parentCommentId = null;
             if (request.getParameter("parent_comment_id") != null) {
                 try {
                     parentCommentId = Long.parseLong(request.getParameter("parent_comment_id"));
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
                     response.sendRedirect("/404");
                 }
             }
-            Comment newComment = new Comment(parentCommentId ,
-                    Long.parseLong(request.getParameter("a")), currentUser.getId(),
+            Comment newComment = new Comment(parentCommentId,
+                    Long.parseLong(request.getParameter("a")), user.getId(),
                     request.getParameter("comment_text"),
-                    OffsetDateTime.now(currentUser.getTimezoneOffset()));
+                    OffsetDateTime.now(user.getTimezoneOffset()));
             newComment = newsService.addComment(newComment);
             if (newComment != null) {
                 response.sendRedirect("/news" + "?a=" + request.getParameter("a"));
             } else {
-                response.sendRedirect("/news"+"?a=" + request.getParameter("a") +"&error=smth_wrong");
+                response.sendRedirect("/news" + "?a=" + request.getParameter("a") + "&error=smth_wrong");
             }
         } else {
-            response.sendRedirect("/news"+"?a=" + request.getParameter("a") +"&error=access_denied");
+
+            response.sendRedirect("/news" + "?a=" + request.getParameter("a") + "&error=access_denied");
+
         }
     }
 
@@ -73,7 +75,9 @@ public class NewsServlet extends HttpServlet {
         //// TODO: 10.11.2016 add clocks info
         //if required all news send news list, if required article - send article
         if (request.getParameter("a") == null) {
-            root.put("articles", newsService.getArticlesForUser(user));
+            String search = request.getParameter("search");
+            root.put("search", search);
+            root.put("articles", newsService.getArticlesForUser(user, search, request.getParameter("headlines_only") != null));
             Election election = electionService.getCurrentElectionForUser(user);
             root.put("user_cannot_vote", (user.getRole() != Role.USER || election == null || electionService.userVotedOnElection(user, election)));
             Helper.render(request, response, "news.ftl", root);
@@ -81,10 +85,10 @@ public class NewsServlet extends HttpServlet {
             long articleNum = 0;
             try {
                 articleNum = Long.parseLong(request.getParameter("a"));
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 response.sendRedirect("/404");
             }
-            Article article = newsService.getArticle(articleNum , user);
+            Article article = newsService.getArticle(articleNum, user);
             root.put("article", article);
             root.put("comments", newsService.getCommentsOfArticleForUser(article, user));
             Helper.render(request, response, "article.ftl", root);

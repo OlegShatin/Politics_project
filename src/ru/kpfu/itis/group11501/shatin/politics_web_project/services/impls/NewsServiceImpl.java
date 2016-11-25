@@ -64,8 +64,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<Article> getArticlesForUser(User user) {
-        return newsRepository.getArticlesForUser(user);
+    public List<Article> getArticlesForUser(User user, String search, boolean headlinesOnly) {
+        return newsRepository.getArticlesForUser(user, search, headlinesOnly);
     }
 
     @Override
