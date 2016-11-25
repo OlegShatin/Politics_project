@@ -42,31 +42,35 @@ public class SignupServlet extends HttpServlet {
             if (!request.getParameter("password").equals(request.getParameter("repeated_password"))) {
                 response.sendRedirect("/signup?error=passwords_dont_match");
             } else {
-                if (userService.emailAlreadyExists(request.getParameter("email").toLowerCase())) {
-                    response.sendRedirect("/signup?error=user_already_exists");
+                if (!userService.emailIsValid(request.getParameter("email"))) {
+                    response.sendRedirect("/signup?error=invalid_email");
                 } else {
-                    if (!userService.passportDataIsValid(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
-                        response.sendRedirect("/signup?error=invalid_passport_data");
+                    if (userService.emailAlreadyExists(request.getParameter("email").toLowerCase())) {
+                        response.sendRedirect("/signup?error=user_already_exists");
                     } else {
-                        if (userService.samePassportExists(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
-                            response.sendRedirect("/signup?error=passport_already_exists");
+                        if (!userService.passportDataIsValid(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
+                            response.sendRedirect("/signup?error=invalid_passport_data");
                         } else {
-                            try {
+                            if (userService.samePassportExists(request.getParameter("passport_series"), request.getParameter("passport_num"))) {
+                                response.sendRedirect("/signup?error=passport_already_exists");
+                            } else {
+                                try {
 
-                                User currentNewUser = userService.createNewUser(
-                                        Helper.getHashedString(request.getParameter("password")),
-                                        request.getParameter("email").toLowerCase(),
-                                        Role.USER,
-                                        Integer.parseInt(request.getParameter("timezone_offset")),
-                                        request.getParameter("passport_series"),
-                                        request.getParameter("passport_num"),
-                                        request.getParameter("name"),
-                                        request.getParameter("surname"),
-                                        request.getParameter("patronymic"),
-                                        LocalDate.parse(request.getParameter("birthday_date")));
-                                response.sendRedirect("/login");
-                            } catch (DateTimeParseException e) {
-                                response.sendRedirect("/signup?error=data_error");
+                                    User currentNewUser = userService.createNewUser(
+                                            Helper.getHashedString(request.getParameter("password")),
+                                            request.getParameter("email").toLowerCase(),
+                                            Role.USER,
+                                            Integer.parseInt(request.getParameter("timezone_offset")),
+                                            request.getParameter("passport_series"),
+                                            request.getParameter("passport_num"),
+                                            request.getParameter("name"),
+                                            request.getParameter("surname"),
+                                            request.getParameter("patronymic"),
+                                            LocalDate.parse(request.getParameter("birthday_date")));
+                                    response.sendRedirect("/login");
+                                } catch (DateTimeParseException e) {
+                                    response.sendRedirect("/signup?error=data_error");
+                                }
                             }
                         }
                     }

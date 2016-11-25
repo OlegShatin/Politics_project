@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private final Pattern PASS_SERIES_PATTERN;
     private final Pattern PASS_NUMBER_PATTERN;
+    private final Pattern EMAIL_PATTERN;
     private MessageRepository messageRepository;
     private CandidateRepository candidateRepository;
 
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
         PASS_SERIES_PATTERN
                 = Pattern.compile("(^[0-9]{4}$)");
         PASS_NUMBER_PATTERN = Pattern.compile("(^[0-9]{6}$)");
+        EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     }
 
     @Override
@@ -172,5 +174,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(long userId, String hashedString) {
         return userRepository.updatePassword(userId, hashedString);
+    }
+
+    @Override
+    public boolean emailIsValid(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 }

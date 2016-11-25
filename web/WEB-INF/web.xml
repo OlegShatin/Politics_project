@@ -134,6 +134,18 @@
 
 
     <!-- Technical -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404</location>
+    </error-page>
+    <servlet>
+        <servlet-name>NotFound</servlet-name>
+        <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.NotFoundServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NotFound</servlet-name>
+        <url-pattern>/404</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>Files</servlet-name>
         <servlet-class>ru.kpfu.itis.group11501.shatin.politics_web_project.servlets.FileServlet</servlet-class>

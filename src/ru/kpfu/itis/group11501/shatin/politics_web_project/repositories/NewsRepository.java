@@ -12,5 +12,5 @@ import java.util.List;
 public interface NewsRepository {
     public Article getArticleByIDForUser(long articleID, User user);
 
-    List<Article> getArticlesForUser(User user);
+    List<Article> getArticlesForUser(User user, String search, boolean headlinesOnly);
 }
