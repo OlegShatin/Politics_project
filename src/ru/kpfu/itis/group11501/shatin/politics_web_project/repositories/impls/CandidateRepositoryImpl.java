@@ -59,7 +59,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                             " LEFT JOIN parties ON (candidates.party = parties.id)WHERE ? = agent_id");
             statement.setLong(1, agent.getId());
             ResultSet resultSet = statement.executeQuery();
+            System.out.println(agent.getId());
             while (resultSet.next()) {
+                System.out.println(resultSet.getString("name"));
                 resultSet.getLong("party_id");
                 if (resultSet.wasNull()) {
                     return createCandidatePresidentByResultSet(resultSet);
@@ -68,6 +70,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;

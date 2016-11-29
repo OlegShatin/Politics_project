@@ -27,7 +27,7 @@ public class ElectionServiceImpl implements ElectionService {
     public Election getCurrentElectionForUser(User user) {
         Election result = electionRepository.getCurrentRawElectionForUser(user);
         if (result != null) {
-            result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result, false));
+            result.getCandidates().addAll(candidateRepository.getCandidatesForElection(result, true));
         }
         return result;
     }

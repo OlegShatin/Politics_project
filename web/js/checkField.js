@@ -21,7 +21,7 @@ function checkField(fieldid) {
         userFormat = userFormat || 'dd.mm.yyyy';
 
         // Находим разделитель исключая символы месяца, дня и года (в английском варианте - m, d, y)
-        var delimiter = /[^mdy]/.exec(userFormat)[0];
+        var delimiter = /[^mdy]/.exec(messageId)[0];
 
         // Создаем массив из месяца, дня и года,
         // то есть мы знаем порядок формата
