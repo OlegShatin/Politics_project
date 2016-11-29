@@ -1,6 +1,6 @@
 <#ftl encoding="utf-8"/>
 <#macro title>
-<title>Новости</title>
+<title>Кандидаты</title>
 </#macro>
 <#macro in_out>
     <#if user_role.name() == "GUEST">
@@ -74,9 +74,9 @@
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <img class="img-responsive" src="${candidate.getImageSrc()}"
+                                <img class="img-responsive img-thumbnail" src="${candidate.getImageSrc()}"
                                      alt="">
-                                <a class="btn btn-primary btn-block" <#if user_role.name() != 'GUEST'> data-toggle="modal" data-target="#send_massage_to${candidate.getId()}"<#else> href="/login" </#if>> Написать обращение <span class="glyphicon glyphicon-pencil"
+                                <a class="btn btn-primary btn-block" <#if user_role.name() != 'GUEST'> data-toggle="modal" data-target="#send_message_to${candidate.getId()}"<#else> href="/login" </#if>> Написать обращение <span class="glyphicon glyphicon-pencil"
                                                                                                                                                                                 aria-hidden="true"></span>
                                 </a>
                                 <div class="modal fade" id="send_message_to${candidate.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

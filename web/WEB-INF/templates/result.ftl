@@ -1,6 +1,6 @@
 <#ftl encoding="utf-8"/>
 <#macro title>
-<title>Новости</title>
+<title>Статистика</title>
 </#macro>
 <#macro in_out>
     <#if user_role.name() == "GUEST">
@@ -70,7 +70,8 @@
 
                                         <p>${item.getCandidate().getElectionProgram()}</p>
                                         <#if item.getCandidate().getParty()??>
-                                            <label>Текущее количество мест в Государственной Думе: ${item.getCandidate().getParty().getSeatsInParliament()}</label>
+                                            <label>Текущее количество мест в Государственной
+                                                Думе: ${item.getCandidate().getParty().getSeatsInParliament()}</label>
 
                                         </#if>
                                     </div>
@@ -144,13 +145,23 @@
                             </div>
                             <div class="col-xs-5">
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar"
-                                         aria-valuenow="${(item.getVotes() * 100/ result.getTotalVotes())?round}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         style="min-width: 2em; width: ${(item.getVotes() * 100/ result.getTotalVotes())?round}%;">
-                                    ${(item.getVotes() * 100/ result.getTotalVotes())?string["0.##"]}%
-                                    </div>
+                                    <#if (result.getTotalVotes() > 0)>
+                                        <div class="progress-bar" role="progressbar"
+                                             aria-valuenow="${(item.getVotes() * 100/ result.getTotalVotes())?round}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="min-width: 2em; width: ${(item.getVotes() * 100/ result.getTotalVotes())?round}%;">
+                                        ${(item.getVotes() * 100/ result.getTotalVotes())?string["0.##"]}%
+                                        </div>
+                                    <#else>
+                                        <div class="progress-bar" role="progressbar"
+                                             aria-valuenow="${(item.getVotes() * 100/ 1)?round}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="min-width: 2em; width: ${(item.getVotes() * 100/ 1)?round}%;">
+                                        ${(item.getVotes() * 100/ 1)?string["0.##"]}%
+                                        </div>
+                                    </#if>
                                 </div>
                             </div>
                         </div>

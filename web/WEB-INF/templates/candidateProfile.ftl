@@ -1,6 +1,6 @@
 <#ftl encoding="utf-8"/>
 <#macro title>
-<title>Профиль</title>
+<title>Редактировать информацию</title>
 </#macro>
 <#macro in_out>
     <#if user_role.name() == "GUEST">

@@ -1,6 +1,6 @@
 <#ftl encoding="utf-8"/>
 <#macro title>
-<title>Новости</title>
+<title>${article.getHeadline()}</title>
 </#macro>
 <#macro in_out>
     <#if user_role.name() == "GUEST">
