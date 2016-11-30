@@ -71,17 +71,8 @@
         <div class="col-md-offset-2 col-md-8">
             <hr>
             <h3>${article.headline}</h3>
-            <h4>${article.publicationDateTime.getDayOfMonth()}
-                .${article.publicationDateTime.month.getValue()}.${article.publicationDateTime.year?c}
-                <#if article.publicationDateTime.getHour() <10>
-                    0${article.publicationDateTime.getHour()}
-                <#else>
-                ${article.publicationDateTime.getHour()}
-                </#if>:
-                <#if article.publicationDateTime.getMinute() <10>
-                    0${article.publicationDateTime.getMinute()}
-                <#else>
-                ${article.publicationDateTime.getMinute()}
+            <h4>${article.publicationDateTime.getDayOfMonth()}.${article.publicationDateTime.month.getValue()}.${article.publicationDateTime.year?c}
+                <#if article.publicationDateTime.getHour() <10>0${article.publicationDateTime.getHour()}<#else>${article.publicationDateTime.getHour()}</#if>:<#if article.publicationDateTime.getMinute() <10>0${article.publicationDateTime.getMinute()}<#else>${article.publicationDateTime.getMinute()}
                 </#if>
             </h4>
 
