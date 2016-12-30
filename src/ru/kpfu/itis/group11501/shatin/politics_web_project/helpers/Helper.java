@@ -25,21 +25,18 @@ public class Helper {
             e.printStackTrace();
         }
     }
-    public static String getHashedString(String rawString){
+    public static String getHashedString(String input){
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] passbyte;
-            StringBuffer  hexString = new StringBuffer();
-            passbyte = rawString.getBytes("UTF-8");
-            passbyte = md.digest(passbyte);
-            for (int i = 0; i < passbyte.length; i++) {
-                hexString.append(Integer.toHexString(0xFF & passbyte[i]));
+            MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+            byte[] result = mDigest.digest(input.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < result.length; i++) {
+                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
             }
-            return hexString.toString();
+
+            return sb.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return null;
